@@ -1,0 +1,32 @@
+{
+  "_README": "TEMPLATE — copy me to content/reports/YYYY-MM.json, then delete this line. Change slug, issueNumber, month, publishedAt.",
+  "slug": "2026-07",
+  "issueNumber": 2,
+  "month": "July 2026",
+  "publishedAt": "2026-08-01",
+  "title": "Your headline for the month",
+  "standfirst": "One sentence that summarises the month.",
+  "tags": ["Tag one", "Tag two"],
+  "pdf": { "screen": "/reports/issue-02-screen.pdf", "press": "/reports/issue-02-press.pdf" },
+  "pageCount": 31,
+  "editorsNote": "Optional pull-quote near the top of the report page.",
+  "indicators": [
+    { "label": "Headline number", "value": "0.0%", "note": "Source, period", "tone": "gold" },
+    { "label": "Second number", "value": "0.0%", "note": "Source, period", "tone": "down" },
+    { "label": "Third number", "value": "0.0%", "note": "Source, period", "tone": "blue" },
+    { "label": "Fourth number", "value": "0.0%", "note": "Source, period", "tone": "up" }
+  ],
+  "highlights": [
+    { "tag": "Global", "title": "First story", "blurb": "Two or three sentences." },
+    { "tag": "Policy", "title": "Second story", "blurb": "Two or three sentences." }
+  ],
+  "charts": {
+    "growthForecast": [ { "name": "S&P", "value": 2.2 }, { "name": "World Bank", "value": 2.5 } ],
+    "growthVsInflation": [ { "name": "GDP", "value": 1.6, "note": "ann." }, { "name": "CPI", "value": 3.8, "note": "y/y" } ],
+    "activityTitle": "Activity index",
+    "activityBaseline": 50,
+    "activityIndex": [ { "name": "Series A", "value": 51.4 }, { "name": "Series B", "value": 49.2 } ],
+    "policy": { "tightening": ["A bank"], "easing": ["Another"], "holding": ["A third"] }
+  },
+  "sources": [ { "name": "Institution — Report, Month Year", "url": "https://example.com" } ]
+}

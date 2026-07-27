@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --emerald: #00d084;
+  --electric: #3b82f6;
+  --cyan: #22d3ee;
+  --violet: #7c3aed;
+  --gold: #fbbf24;
+  --line: rgba(133, 152, 180, 0.14);
+}
+
+html {
+  scroll-behavior: smooth;
+  background: #04070d;
+}
+body {
+  background:
+    radial-gradient(60rem 40rem at 80% -10%, rgba(0, 208, 132, 0.08), transparent 60%),
+    radial-gradient(50rem 40rem at 0% 10%, rgba(59, 130, 246, 0.08), transparent 55%),
+    #04070d;
+}
+
+::selection {
+  background: rgba(0, 208, 132, 0.3);
+  color: #eaf2ff;
+}
+:focus-visible {
+  outline: 2px solid var(--emerald);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+  }
+  /* Frosted glass surface */
+  .glass {
+    @apply rounded-2xl border border-white/[0.07] bg-white/[0.03] backdrop-blur-xl;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 20px 60px -24px rgba(0, 0, 0, 0.7);
+  }
+  .glass-strong {
+    @apply rounded-2xl border border-white/10 bg-navy/60 backdrop-blur-2xl;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 24px 70px -20px rgba(0, 0, 0, 0.8);
+  }
+  .kicker {
+    @apply font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-emerald;
+  }
+  .kicker::before {
+    content: "";
+    @apply mr-2 inline-block h-px w-5 align-middle bg-current;
+  }
+  .h-display {
+    @apply font-display font-semibold tracking-[-0.02em] text-ink;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04]
+           px-3 py-1 font-mono text-[11px] font-medium tracking-wide text-body;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-full bg-emerald px-6 py-3 font-display text-sm
+           font-semibold text-midnight transition-all hover:shadow-glow;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/[0.12] px-6 py-3
+           font-display text-sm font-semibold text-ink transition-colors hover:bg-white/[0.05];
+  }
+  /* Gradient text */
+  .grad-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(100deg, #00d084, #22d3ee 45%, #3b82f6);
+  }
+}
+
+/* Animated gradient hairline used under the nav and section tops */
+.gradient-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 208, 132, 0.5), rgba(59, 130, 246, 0.5), transparent);
+  background-size: 200% 100%;
+  animation: drift 8s linear infinite;
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(133, 152, 180, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(133, 152, 180, 0.045) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: radial-gradient(70% 60% at 50% 30%, black, transparent 80%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,183 @@
+export interface Term { term: string; def: string }
+export interface GlossaryGroup { category: string; blurb: string; terms: Term[] }
+
+export const GLOSSARY: GlossaryGroup[] = [
+  {
+    category: "Economic Growth",
+    blurb: "How fast an economy expands — and what's actually being measured.",
+    terms: [
+      { term: "GDP", def: "Gross Domestic Product — the total value of everything an economy produces. The broadest measure of its size." },
+      { term: "Real vs nominal GDP", def: "Nominal GDP is raw; real GDP strips out inflation, showing true growth rather than just higher prices." },
+      { term: "GDP per capita", def: "GDP divided by population — a rough gauge of average living standards, better for comparing countries of different sizes." },
+      { term: "Annualised rate", def: "A short-period figure scaled to a full-year pace, so one quarter's growth can be compared to a yearly rate." },
+      { term: "Potential output", def: "What an economy could produce at full, sustainable capacity. Running above it stokes inflation; below it wastes resources." },
+      { term: "Output gap", def: "The gap between actual and potential output. Negative signals slack; positive signals overheating." },
+      { term: "Recession", def: "A significant, broad decline in activity lasting more than a few months — loosely, two straight quarters of shrinking GDP." },
+      { term: "Soft landing", def: "Cooling inflation with higher rates without tipping the economy into recession — the rare ideal outcome." },
+    ],
+  },
+  {
+    category: "Inflation & Prices",
+    blurb: "The rate at which money loses purchasing power.",
+    terms: [
+      { term: "CPI", def: "Consumer Price Index — the cost of a fixed basket of goods and services. The headline inflation measure." },
+      { term: "PCE", def: "Personal Consumption Expenditures — the Fed's preferred gauge; it adjusts as shoppers switch products, so it reads slightly lower than CPI." },
+      { term: "Core inflation", def: "Inflation stripped of volatile food and energy — a cleaner read on the underlying trend." },
+      { term: "PPI", def: "Producer Price Index — prices at the factory gate, often an early signal of where consumer prices head next." },
+      { term: "Headline inflation", def: "The full inflation figure, including food and energy — what households actually feel." },
+      { term: "Disinflation vs deflation", def: "Disinflation is prices rising more slowly; deflation is prices actually falling. The first is usually welcome, the second rarely is." },
+      { term: "Sticky prices", def: "Prices slow to change — rents, wages, insurance — which is why inflation lingers after its cause fades." },
+      { term: "Base effect", def: "A quirk where a number looks big or small only because of what it's compared against a year earlier." },
+      { term: "Inflation expectations", def: "What people believe inflation will be. Expectations can be self-fulfilling, which is why central banks guard them fiercely." },
+    ],
+  },
+  {
+    category: "Employment & Labour Markets",
+    blurb: "How many people are working, and on what terms.",
+    terms: [
+      { term: "Unemployment rate", def: "The share of the labour force actively looking for work but without a job." },
+      { term: "Nonfarm payrolls", def: "The monthly change in US jobs outside farming — a closely watched pulse of the labour market." },
+      { term: "Labour force participation", def: "The share of working-age people either employed or looking for work. A falling rate can flatter the unemployment figure." },
+      { term: "Wage growth", def: "How fast pay is rising. Strong wage growth supports spending but can keep inflation sticky." },
+      { term: "Jobless claims", def: "Weekly filings for unemployment benefits — one of the fastest reads on labour-market turning points." },
+      { term: "Full employment", def: "The level of employment at which almost everyone who wants a job has one, without igniting runaway inflation." },
+      { term: "Underemployment", def: "People working less than they'd like, or in jobs below their skill level — hidden slack the headline rate misses." },
+    ],
+  },
+  {
+    category: "Interest Rates & Monetary Policy",
+    blurb: "The central-bank levers that price money across the whole economy.",
+    terms: [
+      { term: "Policy rate", def: "The interest rate a central bank sets, which ripples out to every loan, mortgage and savings account." },
+      { term: "Basis point (bp)", def: "One hundredth of a percent. A '25bp' hike means 0.25%." },
+      { term: "Hawkish / Dovish", def: "Hawks favour higher rates to fight inflation; doves favour lower rates to protect growth and jobs." },
+      { term: "Neutral rate", def: "The rate that neither stimulates nor restrains the economy — the theoretical resting point policymakers aim around." },
+      { term: "Quantitative easing (QE)", def: "A central bank creating money to buy bonds, pushing down long-term rates when cutting the policy rate isn't enough." },
+      { term: "Quantitative tightening (QT)", def: "The reverse of QE — shrinking the bond pile, draining money from the system." },
+      { term: "Forward guidance", def: "A central bank signalling its likely future moves so markets adjust before anything changes." },
+      { term: "Real interest rate", def: "The policy rate minus inflation — the true cost of borrowing after prices are accounted for." },
+    ],
+  },
+  {
+    category: "Money Supply & Banking",
+    blurb: "How much money exists, and how it moves through the financial system.",
+    terms: [
+      { term: "Money supply (M1, M2)", def: "The total money circulating. M1 is cash and current accounts; M2 adds savings. Grow it too fast and inflation tends to follow." },
+      { term: "Reserve requirement", def: "The share of deposits banks must hold rather than lend — a lever on how much credit flows." },
+      { term: "Velocity of money", def: "How often a unit of currency changes hands. Falling velocity can blunt the inflationary effect of money printing." },
+      { term: "Credit growth", def: "How fast lending expands. Rapid credit growth fuels booms — and sometimes the busts that follow." },
+      { term: "Liquidity", def: "How easily money or an asset can be moved or sold without moving its price. Cash is perfectly liquid; property is not." },
+      { term: "Central bank balance sheet", def: "The assets a central bank holds. It swells during QE and shrinks during QT, shaping financial conditions." },
+    ],
+  },
+  {
+    category: "Consumer Spending & Confidence",
+    blurb: "The demand side — households, the engine of most economies.",
+    terms: [
+      { term: "Retail sales", def: "The monthly value of goods sold to consumers — a direct read on household demand." },
+      { term: "Consumer confidence", def: "Survey-based measure of how optimistic households feel. Optimism today often predicts spending tomorrow." },
+      { term: "Personal savings rate", def: "The share of income households save rather than spend. A rising rate can signal caution or stress." },
+      { term: "Disposable income", def: "Income left after taxes — the money households actually have to spend or save." },
+      { term: "Real wages", def: "Wages adjusted for inflation. If prices rise faster than pay, real wages fall even as paycheques grow." },
+    ],
+  },
+  {
+    category: "Business Activity",
+    blurb: "The supply side — firms, factories and services.",
+    terms: [
+      { term: "PMI", def: "Purchasing Managers' Index. Above 50 means more firms report expansion than contraction — a fast read before official data." },
+      { term: "Industrial production", def: "The output of factories, mines and utilities — a core measure of the goods economy." },
+      { term: "Capacity utilisation", def: "How much of an economy's productive capacity is in use. High utilisation can signal building price pressure." },
+      { term: "Business investment (capex)", def: "Spending by firms on buildings, equipment and technology — the seed of future growth." },
+      { term: "Durable goods orders", def: "New orders for long-lasting products like machinery — a forward look at manufacturing demand." },
+      { term: "Inventories", def: "Unsold stock held by businesses. Rising inventories can mean weakening demand or a coming production slowdown." },
+    ],
+  },
+  {
+    category: "Housing Markets",
+    blurb: "Often the largest asset households own — and a powerful economic signal.",
+    terms: [
+      { term: "Housing starts", def: "The number of new homes on which construction began — a leading indicator of building activity." },
+      { term: "Building permits", def: "Approvals to build, which precede starts — an even earlier read on the construction pipeline." },
+      { term: "Home price index", def: "A gauge of how house prices are moving, key to household wealth and the health of mortgage lending." },
+      { term: "Mortgage rate", def: "The interest rate on home loans, closely tied to long-term bond yields — the main lever on housing affordability." },
+      { term: "Existing home sales", def: "Completed sales of previously owned homes — the bulk of the housing market and a read on demand." },
+    ],
+  },
+  {
+    category: "Government Finance",
+    blurb: "How states tax, spend and borrow.",
+    terms: [
+      { term: "Budget deficit / surplus", def: "A deficit means a government spends more than it collects; a surplus, the reverse." },
+      { term: "National debt", def: "The accumulated total a government owes — the sum of past deficits, financed by issuing bonds." },
+      { term: "Debt-to-GDP ratio", def: "Debt measured against the size of the economy — a better gauge of sustainability than the raw number." },
+      { term: "Fiscal policy", def: "The government's tax-and-spend lever, as opposed to the central bank's interest-rate lever." },
+      { term: "Sovereign debt", def: "Money a national government borrows. When investors doubt repayment, borrowing costs spike for the whole country." },
+      { term: "Bond auction", def: "The sale of new government debt. Weak demand at auction pushes yields up and signals waning confidence." },
+    ],
+  },
+  {
+    category: "International Trade",
+    blurb: "How economies exchange goods, services and capital across borders.",
+    terms: [
+      { term: "Trade balance", def: "Exports minus imports. A deficit means a country buys more abroad than it sells; a surplus, the reverse." },
+      { term: "Current account", def: "The broadest trade measure — goods, services, income and transfers combined." },
+      { term: "Tariff", def: "A tax on imports. It shields domestic producers but usually raises prices for buyers at home." },
+      { term: "Friend-shoring", def: "Routing supply chains through political allies rather than the cheapest location — trading efficiency for resilience." },
+      { term: "Foreign direct investment (FDI)", def: "Long-term investment by a company or investor into another country's businesses or assets." },
+      { term: "Terms of trade", def: "The ratio of export prices to import prices. Improving terms mean a country earns more per unit it sells." },
+    ],
+  },
+  {
+    category: "Financial Markets",
+    blurb: "Where capital is priced, traded and put to work.",
+    terms: [
+      { term: "Yield", def: "A bond's effective return. It rises when the bond's price falls, and vice-versa." },
+      { term: "Yield curve", def: "Yields plotted across maturities. When short-term yields exceed long-term — an 'inversion' — recessions have often followed." },
+      { term: "Real yield", def: "Interest after subtracting inflation — the true reward for lending money." },
+      { term: "Spread", def: "The gap between two yields, often a riskier bond versus a safe one. Widening spreads signal rising fear." },
+      { term: "Market capitalisation", def: "The total value of a company's shares — price times shares outstanding." },
+      { term: "Volatility", def: "How sharply and often prices swing. High volatility means bigger, faster moves — and usually more fear." },
+      { term: "Bull vs bear market", def: "A bull market is a sustained rise (~+20%); a bear market a sustained fall (~−20%)." },
+      { term: "Market breadth", def: "How many stocks drive a move. Narrow breadth — a few giants carrying the index — is fragile when they turn." },
+      { term: "Risk-on / Risk-off", def: "Risk-on is chasing returns in volatile assets; risk-off is the flight to safety." },
+      { term: "Safe haven", def: "An asset investors flee to in turmoil — gold, the dollar, government bonds — because it holds value when others fall." },
+      { term: "Credit rating", def: "A grade (AAA to D) for how likely a borrower is to repay, setting how cheaply they can borrow." },
+      { term: "Investment grade", def: "A rating of BBB− or better. Crossing that line unlocks far cheaper borrowing." },
+    ],
+  },
+  {
+    category: "Productivity",
+    blurb: "How efficiently an economy turns inputs into output — the root of long-run prosperity.",
+    terms: [
+      { term: "Labour productivity", def: "Output per hour worked. Rising productivity lets wages grow without fuelling inflation." },
+      { term: "Total factor productivity (TFP)", def: "The growth in output not explained by more labour or capital — essentially, better technology and know-how." },
+      { term: "Unit labour cost", def: "The labour cost of producing one unit of output. Rising costs squeeze margins or push up prices." },
+    ],
+  },
+  {
+    category: "Leading, Coincident & Lagging Indicators",
+    blurb: "Data grouped by whether it predicts, confirms, or trails the cycle.",
+    terms: [
+      { term: "Leading indicator", def: "Data that turns before the economy does — PMIs, building permits, jobless claims, the yield curve." },
+      { term: "Coincident indicator", def: "Data that moves with the economy in real time — industrial production, retail sales, employment." },
+      { term: "Lagging indicator", def: "Data that confirms a trend after it's underway — unemployment, core inflation, corporate profits." },
+      { term: "Composite index", def: "A blend of several indicators into one gauge, smoothing out the noise of any single series." },
+    ],
+  },
+  {
+    category: "Commodities & Currencies",
+    blurb: "The raw materials and money that price everything else.",
+    terms: [
+      { term: "Supply shock", def: "A sudden disruption to the supply of an essential good — the way an oil crisis lifts prices while choking growth." },
+      { term: "Pass-through", def: "How an input cost travels downstream: pricier oil becomes pricier freight, which becomes pricier food." },
+      { term: "Exchange rate", def: "How much one currency is worth in another. A weaker currency makes exports cheaper but imports — like oil — dearer." },
+      { term: "Reserve currency", def: "A currency governments hold in bulk and use for global trade — overwhelmingly the US dollar today." },
+      { term: "Devaluation", def: "A fall in a currency's value. It can boost exports, but imported inflation comes with it." },
+      { term: "Resource curse", def: "The paradox that resource-rich nations often grow slower, as export dollars inflate the currency and hollow out other industries." },
+      { term: "Stagflation", def: "High inflation and stagnant growth at once — the hardest problem in macro, because the cure for one worsens the other." },
+    ],
+  },
+];
+
+export const GLOSSARY_COUNT = GLOSSARY.reduce((n, g) => n + g.terms.length, 0);
