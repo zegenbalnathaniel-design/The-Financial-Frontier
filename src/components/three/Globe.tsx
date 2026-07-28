@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Line, Html } from "@react-three/drei";
 import * as THREE from "three";
 import { COUNTRIES, type Country } from "@/lib/countries";
 import { currentValue, colorForIndicator, fmt, type IndicatorMeta } from "@/lib/indicators";
+import type { LiveSnapshot } from "@/lib/live/types";
 
 const R = 1.65;
 
@@ -75,10 +76,10 @@ function GlobeBody() {
   );
 }
 
-function Hub({ country, ind, onSelect }: { country: Country; ind: IndicatorMeta; onSelect: (c: Country) => void }) {
+function Hub({ country, ind, onSelect, live }: { country: Country; ind: IndicatorMeta; onSelect: (c: Country) => void; live?: LiveSnapshot | null }) {
   const [hovered, setHovered] = useState(false);
   const pos = useMemo(() => toVec(country.lat, country.lon), [country]);
-  const val = currentValue(country, ind);
+  const val = currentValue(country, ind, live);
   const color = colorForIndicator(ind, val);
   const ringRef = useRef<THREE.Mesh>(null);
   useFrame(() => { if (ringRef.current && country.hub) ringRef.current.lookAt(0, 0, 0); });
@@ -129,7 +130,7 @@ function Arc({ from, to, color }: { from: THREE.Vector3; to: THREE.Vector3; colo
   );
 }
 
-function Scene({ ind, onSelect, spin }: { ind: IndicatorMeta; onSelect: (c: Country) => void; spin: number }) {
+function Scene({ ind, onSelect, spin, live }: { ind: IndicatorMeta; onSelect: (c: Country) => void; spin: number; live?: LiveSnapshot | null }) {
   const g = useRef<THREE.Group>(null);
   const hubs = useMemo(() => COUNTRIES.filter((c) => c.hub), []);
   const arcs = useMemo(() => {
@@ -141,22 +142,53 @@ function Scene({ ind, onSelect, spin }: { ind: IndicatorMeta; onSelect: (c: Coun
   return (
     <group ref={g} rotation={[0.35, 0, 0.12]}>
       <GlobeBody />
-      {COUNTRIES.map((c) => <Hub key={c.code} country={c} ind={ind} onSelect={onSelect} />)}
+      {COUNTRIES.map((c) => <Hub key={c.code} country={c} ind={ind} onSelect={onSelect} live={live} />)}
       {arcs.map(([a, b], i) => <Arc key={i} from={toVec(a.lat, a.lon)} to={toVec(b.lat, b.lon)} color="#22d3ee" />)}
     </group>
   );
 }
 
-export default function Globe({ ind, onSelect, interactive = true, spin = 1 }:
-  { ind: IndicatorMeta; onSelect: (c: Country) => void; interactive?: boolean; spin?: number }) {
+/**
+ * Pause the render loop while the globe is scrolled off-screen. An idle WebGL
+ * canvas with a per-frame `useFrame` rotation + OrbitControls autoRotate is one of
+ * the heaviest things on the page; freezing it (frameloop="never") while it isn't
+ * visible removes that cost from every scroll frame. It resumes the instant a sliver
+ * scrolls back into view.
+ */
+function useInView<T extends HTMLElement>(rootMargin = "120px") {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(true);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [rootMargin]);
+  return { ref, inView };
+}
+
+function Globe({ ind, onSelect, interactive = true, spin = 1, live }:
+  { ind: IndicatorMeta; onSelect: (c: Country) => void; interactive?: boolean; spin?: number; live?: LiveSnapshot | null }) {
+  const { ref, inView } = useInView<HTMLDivElement>();
   return (
-    <Canvas camera={{ position: [0, 0, 5.2], fov: 42 }} dpr={[1, 2]} gl={{ antialias: true, alpha: true }}>
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[5, 3, 5]} intensity={1.2} />
-      <directionalLight position={[-5, -2, -3]} intensity={0.4} color="#3b82f6" />
-      <Scene ind={ind} onSelect={onSelect} spin={spin} />
-      <OrbitControls enablePan={false} enableZoom={interactive} enableRotate={interactive}
-        autoRotate autoRotateSpeed={0.5} minDistance={3.4} maxDistance={8} />
-    </Canvas>
+    <div ref={ref} className="h-full w-full">
+      <Canvas frameloop={inView ? "always" : "never"}
+        camera={{ position: [0, 0, 5.2], fov: 42 }} dpr={[1, 2]} gl={{ antialias: true, alpha: true }}>
+        <ambientLight intensity={0.6} />
+        <directionalLight position={[5, 3, 5]} intensity={1.2} />
+        <directionalLight position={[-5, -2, -3]} intensity={0.4} color="#3b82f6" />
+        <Scene ind={ind} onSelect={onSelect} spin={spin} live={live} />
+        <OrbitControls enablePan={false} enableZoom={interactive} enableRotate={interactive}
+          autoRotate autoRotateSpeed={0.5} minDistance={3.4} maxDistance={8} />
+      </Canvas>
+    </div>
   );
 }
+
+// Memoized so a parent re-render (e.g. selecting a country in GlobeSection) does not
+// reconcile the entire 3D scene — only an `ind`/`spin` change re-renders the globe.
+export default memo(Globe);

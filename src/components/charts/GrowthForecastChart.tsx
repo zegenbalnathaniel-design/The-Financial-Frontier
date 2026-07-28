@@ -1,9 +1,10 @@
 "use client";
+import { memo } from "react";
 import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { BarPoint } from "@/lib/types";
 const COLORS = ["#3B82F6", "#00D084", "#7C3AED", "#22D3EE"];
 const axis = { fill: "#586A86", fontSize: 11, fontFamily: "var(--font-mono)" };
-export default function GrowthForecastChart({ data }: { data: BarPoint[] }) {
+function GrowthForecastChart({ data }: { data: BarPoint[] }) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart data={data} margin={{ top: 18, right: 8, left: -22, bottom: 0 }}>
@@ -15,3 +16,4 @@ export default function GrowthForecastChart({ data }: { data: BarPoint[] }) {
     </ResponsiveContainer>
   );
 }
+export default memo(GrowthForecastChart);

@@ -8,6 +8,8 @@ import { LineChart as LineIcon, BarChart3, Table2, ListOrdered, Info, Download }
 import {
   INDICATORS, FAMILIES, TIMEFRAMES, ALL_COUNTRIES, currentValue, series, fmt, type IndicatorMeta,
 } from "@/lib/indicators";
+import { useLive } from "@/components/live/LiveDataProvider";
+import { liveGet } from "@/lib/live/types";
 
 const SERIES_COLORS = ["#00D084", "#3B82F6", "#22D3EE", "#7C3AED", "#FBBF24", "#F65B5B", "#8598B4", "#34D399"];
 const axis = { fill: "#586A86", fontSize: 11, fontFamily: "var(--font-mono)" };
@@ -16,6 +18,7 @@ const box = { background: "#08111F", border: "1px solid rgba(133,152,180,0.2)", 
 type View = "line" | "bar" | "table" | "rankings";
 
 export default function IndicatorExplorer() {
+  const live = useLive();
   const [indKey, setIndKey] = useState("gdpGrowth");
   const [family, setFamily] = useState<string>("All");
   const [view, setView] = useState<View>("line");
@@ -32,23 +35,28 @@ export default function IndicatorExplorer() {
 
   // line data: [{ t, US: v, DE: v, ... }]
   const lineData = useMemo(() => {
-    const cols = chosen.map((c) => ({ code: c.code, s: series(c, ind, tf.points) }));
+    const cols = chosen.map((c) => ({ code: c.code, s: series(c, ind, tf.points, live) }));
     return Array.from({ length: tf.points }, (_, i) => {
       const row: Record<string, number | string> = { t: `T-${tf.points - i}` };
       cols.forEach((c) => (row[c.code] = c.s[i]));
       return row;
     });
-  }, [chosen, ind, tf]);
+  }, [chosen, ind, tf, live]);
 
   // current-value data for bar / table / rankings
   const currentData = useMemo(
-    () => chosen.map((c) => ({ code: c.code, name: c.name, value: currentValue(c, ind) })),
-    [chosen, ind],
+    () => chosen.map((c) => ({ code: c.code, name: c.name, value: currentValue(c, ind, live) })),
+    [chosen, ind, live],
   );
   const rankingData = useMemo(
-    () => ALL_COUNTRIES.map((c) => ({ code: c.code, name: c.name, value: currentValue(c, ind) }))
+    () => ALL_COUNTRIES.map((c) => ({ code: c.code, name: c.name, value: currentValue(c, ind, live) }))
       .sort((a, b) => (ind.higherBetter === false ? a.value - b.value : b.value - a.value)),
-    [ind],
+    [ind, live],
+  );
+  // How many of the shown economies have a real sourced value for this indicator.
+  const liveCount = useMemo(
+    () => chosen.filter((c) => liveGet(live, c.code, ind.key)).length,
+    [chosen, ind, live],
   );
 
   const toggle = (code: string) =>
@@ -219,8 +227,9 @@ export default function IndicatorExplorer() {
           <div>
             <p className="text-sm text-body">{ind.about}</p>
             <p className="mt-2 font-mono text-[10px] text-muted2">
-              Illustrative sample data (deterministic), seeded with our June 2026 figures where available.
-              Growth, inflation and policy-rate draw from the report dataset; other series are placeholders. See About → data honesty.
+              {liveCount > 0
+                ? `● Live: ${liveCount}/${chosen.length} shown economies sourced for this indicator (${live.sources.join(", ")}); the rest are deterministic placeholders. Time-series before the latest point are illustrative.`
+                : "Illustrative sample data (deterministic). No free live source covers this indicator across these economies; growth, inflation, per-capita, unemployment, trade and fiscal series update live where available. See About → data honesty."}
             </p>
           </div>
         </div>

@@ -1,12 +1,16 @@
 // Indicator engine for the SingStat-style explorer.
 //
-// DATA HONESTY: values are ILLUSTRATIVE sample data, deterministically generated so
-// they're stable across renders. Growth / inflation / policy-rate pull from the
-// (June-2026-seeded) country dataset; the rest are plausible placeholders in sensible
-// ranges. Wire a real time-series source (IMF/World Bank/FRED) into this file to make
-// the explorer authoritative — the UI labels these as sample data throughout.
+// DATA HONESTY: currentValue()/series() take an optional live snapshot (src/lib/live/)
+// and return REAL sourced values wherever one exists for that country+indicator —
+// World Bank covers ~11 indicators (growth, inflation, per-capita, unemployment,
+// current account, fiscal balance, debt, broad money, FDI, trade balance, market cap);
+// FRED adds policy rates & 10y yields; ECB/Frankfurter adds FX. Everything else falls
+// back to the deterministic placeholders below (stable across renders) and is labelled
+// as sample data in the UI. Historical points of the series are always illustrative —
+// only the latest point is anchored to the live value.
 
 import { COUNTRIES, type Country } from "./countries";
+import { liveGet, type LiveSnapshot, type Provenance } from "./live/types";
 
 export type Family =
   | "Economic Growth" | "Inflation & Prices" | "Employment & Labour"
@@ -65,16 +69,24 @@ function rand(seed: string): number {
   return ((h >>> 0) % 100000) / 100000;
 }
 
-export function currentValue(country: Country, ind: IndicatorMeta): number {
+export function currentValue(country: Country, ind: IndicatorMeta, live?: LiveSnapshot | null): number {
+  // Prefer a real, sourced value when the live snapshot has one for this cell.
+  const sourced = liveGet(live, country.code, ind.key);
+  if (sourced) return +sourced.value.toFixed(ind.decimals);
   if (ind.field) return country.data[ind.field] as number;
   const [min, max] = ind.range;
   const v = min + rand(country.code + ind.key) * (max - min);
   return +v.toFixed(ind.decimals);
 }
 
-/** A stable illustrative time-series ending at the current value. */
-export function series(country: Country, ind: IndicatorMeta, points: number): number[] {
-  const end = currentValue(country, ind);
+/** Provenance for a cell: the live source if present, else the static-data honesty note. */
+export function provenanceFor(country: Country, ind: IndicatorMeta, live?: LiveSnapshot | null): Provenance | { source: "Sample data"; asOf: "" } {
+  return liveGet(live, country.code, ind.key) ?? { source: "Sample data", asOf: "" };
+}
+
+/** A stable illustrative time-series ending at the current (live-or-sample) value. */
+export function series(country: Country, ind: IndicatorMeta, points: number, live?: LiveSnapshot | null): number[] {
+  const end = currentValue(country, ind, live);
   const [min, max] = ind.range;
   const span = (max - min) * 0.14 + Math.abs(end) * 0.06;
   const out: number[] = [];

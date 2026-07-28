@@ -1,8 +1,9 @@
 "use client";
+import { memo } from "react";
 import { Bar, BarChart, Cell, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { BarPoint } from "@/lib/types";
 const axis = { fill: "#586A86", fontSize: 11, fontFamily: "var(--font-mono)" };
-export default function ActivityIndexChart({ data, baseline = 50 }: { data: BarPoint[]; baseline?: number }) {
+function ActivityIndexChart({ data, baseline = 50 }: { data: BarPoint[]; baseline?: number }) {
   const min = Math.min(baseline, ...data.map((d) => d.value)) - 0.6;
   const max = Math.max(baseline, ...data.map((d) => d.value)) + 0.6;
   return (
@@ -17,3 +18,4 @@ export default function ActivityIndexChart({ data, baseline = 50 }: { data: BarP
     </ResponsiveContainer>
   );
 }
+export default memo(ActivityIndexChart);

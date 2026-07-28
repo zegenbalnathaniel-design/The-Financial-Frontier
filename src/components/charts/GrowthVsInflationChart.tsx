@@ -1,9 +1,10 @@
 "use client";
+import { memo } from "react";
 import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { BarPoint } from "@/lib/types";
 const axis = { fill: "#586A86", fontSize: 11, fontFamily: "var(--font-mono)" };
 const colorFor = (n: string) => (/infl|cpi|price/i.test(n) ? "#FBBF24" : "#3B82F6");
-export default function GrowthVsInflationChart({ data }: { data: BarPoint[] }) {
+function GrowthVsInflationChart({ data }: { data: BarPoint[] }) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart data={data} margin={{ top: 18, right: 8, left: -22, bottom: 0 }}>
@@ -15,3 +16,4 @@ export default function GrowthVsInflationChart({ data }: { data: BarPoint[] }) {
     </ResponsiveContainer>
   );
 }
+export default memo(GrowthVsInflationChart);

@@ -6,11 +6,8 @@ import { getReport, getReportSlugs } from "@/lib/reports";
 import StatCard from "@/components/StatCard";
 import Reveal from "@/components/Reveal";
 import PdfViewer from "@/components/PdfViewer";
-import ChartFrame from "@/components/charts/ChartFrame";
-import GrowthForecastChart from "@/components/charts/GrowthForecastChart";
-import GrowthVsInflationChart from "@/components/charts/GrowthVsInflationChart";
-import ActivityIndexChart from "@/components/charts/ActivityIndexChart";
-import PolicyDivergence from "@/components/charts/PolicyDivergence";
+import LazyVisible from "@/components/LazyVisible";
+import ChartsGrid from "@/components/charts/ChartsGrid";
 
 type Props = { params: { slug: string } };
 export function generateStaticParams() { return getReportSlugs().map((slug) => ({ slug })); }
@@ -48,12 +45,7 @@ export default function ReportPage({ params }: Props) {
 
       <section className="mt-20">
         <Reveal><h2 className="h-display text-2xl">Charts that explain the month</h2></Reveal>
-        <div className="mt-6 grid gap-6 lg:grid-cols-2">
-          {charts.growthForecast && <Reveal><ChartFrame title="2026 global growth: who forecasts what" caption="Forecasters disagree on the decimal, not the direction."><GrowthForecastChart data={charts.growthForecast} /></ChartFrame></Reveal>}
-          {charts.growthVsInflation && <Reveal delay={0.06}><ChartFrame title="Growth versus prices" accent="electric" caption="Blue is growth; gold is inflation."><GrowthVsInflationChart data={charts.growthVsInflation} /></ChartFrame></Reveal>}
-          {charts.activityIndex && <Reveal delay={0.1}><ChartFrame title={charts.activityTitle ?? "Activity index"} accent="violet" caption={`Above ${charts.activityBaseline ?? 50} signals expansion.`}><ActivityIndexChart data={charts.activityIndex} baseline={charts.activityBaseline} /></ChartFrame></Reveal>}
-          {charts.policy && <Reveal delay={0.14}><section className="glass p-6"><h3 className="flex items-center gap-2 font-display text-sm font-semibold text-ink"><span className="h-2 w-2 rounded-full bg-emerald" />Central banks, split</h3><div className="mt-5"><PolicyDivergence policy={charts.policy} /></div><p className="mt-3 text-xs italic text-muted2">Divergence, not any single data point, was the signature of this month.</p></section></Reveal>}
-        </div>
+        <div className="mt-6"><ChartsGrid charts={charts} /></div>
       </section>
 
       <section className="mt-20">
@@ -65,7 +57,7 @@ export default function ReportPage({ params }: Props) {
 
       <section className="mt-20">
         <Reveal><div className="flex flex-wrap items-end justify-between gap-4"><h2 className="h-display text-2xl">Read the full issue</h2><p className="text-sm text-muted2">{report.pageCount ?? "—"} pages</p></div></Reveal>
-        <Reveal delay={0.06}><div className="mt-6"><PdfViewer screen={report.pdf.screen} press={report.pdf.press} title={report.title} pageCount={report.pageCount} /></div></Reveal>
+        <Reveal delay={0.06}><div className="mt-6"><LazyVisible minHeight="85vh"><PdfViewer screen={report.pdf.screen} press={report.pdf.press} title={report.title} pageCount={report.pageCount} /></LazyVisible></div></Reveal>
       </section>
 
       <section className="mt-20">

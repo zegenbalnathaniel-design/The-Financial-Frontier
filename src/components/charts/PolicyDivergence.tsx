@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { ArrowDown, ArrowUp, Minus } from "lucide-react";
 type Policy = { tightening: string[]; easing: string[]; holding: string[] };
 const cols = [
@@ -5,7 +6,7 @@ const cols = [
   { key: "holding", label: "Holding", Icon: Minus, color: "text-muted", ring: "border-white/10 bg-white/[0.03]" },
   { key: "easing", label: "Easing", Icon: ArrowDown, color: "text-pos", ring: "border-pos/25 bg-pos/[0.06]" },
 ] as const;
-export default function PolicyDivergence({ policy }: { policy: Policy }) {
+function PolicyDivergence({ policy }: { policy: Policy }) {
   return (
     <div className="grid gap-4 sm:grid-cols-3">
       {cols.map(({ key, label, Icon, color, ring }) => (
@@ -22,3 +23,4 @@ export default function PolicyDivergence({ policy }: { policy: Policy }) {
     </div>
   );
 }
+export default memo(PolicyDivergence);

@@ -1,13 +1,16 @@
+"use client";
 import Link from "next/link";
 import Sparkline from "@/components/Sparkline";
 import { INDICATORS, ALL_COUNTRIES, currentValue, series, fmt } from "@/lib/indicators";
+import { useLive } from "@/components/live/LiveDataProvider";
 
 const COLORS = ["#00D084", "#3B82F6", "#22D3EE", "#7C3AED", "#FBBF24", "#34D399"];
 
 export default function IndicatorStrip() {
+  const live = useLive();
   const ind = INDICATORS[0]; // GDP growth
   const cards = ALL_COUNTRIES.filter((c) => c.hub)
-    .map((c) => ({ c, v: currentValue(c, ind), s: series(c, ind, 24) }))
+    .map((c) => ({ c, v: currentValue(c, ind, live), s: series(c, ind, 24, live) }))
     .sort((a, b) => b.v - a.v)
     .slice(0, 6);
 

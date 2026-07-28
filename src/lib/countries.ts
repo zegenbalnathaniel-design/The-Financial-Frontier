@@ -1,10 +1,11 @@
 // Country dataset powering the 3D globe and the economic network.
 //
-// IMPORTANT — DATA HONESTY: values here are ILLUSTRATIVE sample data for the
-// visualisation, seeded with June 2026 figures where our sourced report has them
-// (see content/reports/2026-06.json). They are not a live feed. Wire a real source
-// (IMF/World Bank/FRED) in src/lib/countries.ts to make these authoritative. The UI
-// labels these panels as sample data.
+// IMPORTANT — DATA HONESTY: values here are the FALLBACK dataset — illustrative sample
+// data seeded with June 2026 report figures (see content/reports/2026-06.json). At
+// runtime, src/lib/live/ overlays REAL sourced values on top of these wherever a free
+// API (World Bank, ECB/Frankfurter) or a keyed API (FRED, Finnhub) returns one; those
+// cells are marked "live" in the UI. Anything with no live source keeps the sample
+// value below and stays labelled as sample data. See src/lib/live/snapshot.ts.
 
 export type Region =
   | "North America" | "South America" | "Europe" | "Africa"
