@@ -22,7 +22,7 @@
     { "label": "Euro-area inflation", "value": "2.8%", "note": "June flash", "tone": "gold" },
     { "label": "ECB policy move", "value": "+25bp", "note": "11 June — first G7 hike of 2026", "tone": "blue" },
     { "label": "India repo rate", "value": "5.25%", "note": "Held, neutral stance", "tone": "neutral" },
-    { "label": "India growth, 2026", "value": "5.7%", "note": "S&P Global", "tone": "up" },
+    { "label": "India growth, 2026", "value": "6.5%", "note": "S&P Global — FY26", "tone": "up" },
     { "label": "Euro-area growth, 2026", "value": "0.2%", "note": "S&P Global", "tone": "down" },
     { "label": "China mfg PMI", "value": "50.3", "note": "June — back above 50", "tone": "up" },
     { "label": "Oil recession scenario", "value": "$150", "note": "Per barrel — World Bank", "tone": "down" }

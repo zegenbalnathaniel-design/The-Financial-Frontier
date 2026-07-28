@@ -68,7 +68,7 @@ export const COUNTRIES: Country[] = [
   { code: "KE", name: "Kenya", lat: 0, lon: 38, region: "Africa", groups: ["AfricanUnion","Frontier"],
     data: { growth: 5.2, inflation: 5.1, rate: 11.25, market: "NSE 20", change: 0.3, currency: "KES" } },
   { code: "IN", name: "India", lat: 22, lon: 79, region: "Asia", groups: ["G20","BRICS","SAARC","Emerging"], hub: true,
-    data: { growth: 5.7, inflation: 4.8, rate: 5.25, market: "Nifty 50", change: 0.4, currency: "INR" }, sourced: true },
+    data: { growth: 6.5, inflation: 4.4, rate: 5.25, market: "Nifty 50", change: 0.4, currency: "INR" }, sourced: true },
   { code: "CN", name: "China", lat: 35, lon: 104, region: "Asia", groups: ["G20","BRICS","APEC","Emerging"], hub: true,
     data: { growth: 4.5, inflation: 0.9, rate: 3.1, market: "CSI 300", change: 0.2, currency: "CNY" }, sourced: true },
   { code: "JP", name: "Japan", lat: 36, lon: 138, region: "Asia", groups: ["G7","G20","OECD","APEC","Developed"], hub: true,
