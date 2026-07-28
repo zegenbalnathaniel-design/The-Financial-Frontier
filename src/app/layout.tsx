@@ -4,6 +4,7 @@ import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { LiveDataProvider } from "@/components/live/LiveDataProvider";
 import { getLiveSnapshot } from "@/lib/live/snapshot";
 
@@ -33,6 +34,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Nav />
           <main className="min-h-screen">{children}</main>
           <Footer />
+          <SpeedInsights />
         </LiveDataProvider>
       </body>
     </html>
