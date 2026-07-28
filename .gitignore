@@ -4,3 +4,9 @@ out
 .DS_Store
 *.tsbuildinfo
 next-env.d.ts
+
+# Environment / secrets — never commit these
+.env
+.env.*
+!.env.example
+.vercel
