@@ -69,19 +69,39 @@ function rand(seed: string): number {
   return ((h >>> 0) % 100000) / 100000;
 }
 
+// The curated baseline: our hand-checked figures reflect the October 2026 report. A live
+// value only supersedes a curated figure when it is genuinely newer than this — which
+// stops stale annual data (e.g. World Bank's last-completed-year CPI) from overwriting
+// an accurate current number. For placeholder cells (no curated value) live always wins.
+const CURATED_BASELINE = "2026-10";
+function asOfRank(s: string): number {
+  const m = /^(\d{4})(?:-(\d{2}))?/.exec(s || "");
+  return m ? Number(m[1]) * 100 + (m[2] ? Number(m[2]) : 0) : 0;
+}
+
+/** Whether the live snapshot's value should be used for this cell (vs the static one). */
+export function usesLive(country: Country, ind: IndicatorMeta, live?: LiveSnapshot | null): boolean {
+  const p = liveGet(live, country.code, ind.key);
+  if (!p) return false;
+  // A curated cell = a report-grounded country on a field-backed indicator (growth/inflation/rate).
+  const curated = !!ind.field && !!country.sourced;
+  if (!curated) return true; // placeholder cell → any real value is an improvement
+  return asOfRank(p.asOf) > asOfRank(CURATED_BASELINE); // curated cell → only if live is fresher
+}
+
 export function currentValue(country: Country, ind: IndicatorMeta, live?: LiveSnapshot | null): number {
-  // Prefer a real, sourced value when the live snapshot has one for this cell.
-  const sourced = liveGet(live, country.code, ind.key);
-  if (sourced) return +sourced.value.toFixed(ind.decimals);
+  if (usesLive(country, ind, live)) return +liveGet(live, country.code, ind.key)!.value.toFixed(ind.decimals);
   if (ind.field) return country.data[ind.field] as number;
   const [min, max] = ind.range;
   const v = min + rand(country.code + ind.key) * (max - min);
   return +v.toFixed(ind.decimals);
 }
 
-/** Provenance for a cell: the live source if present, else the static-data honesty note. */
-export function provenanceFor(country: Country, ind: IndicatorMeta, live?: LiveSnapshot | null): Provenance | { source: "Sample data"; asOf: "" } {
-  return liveGet(live, country.code, ind.key) ?? { source: "Sample data", asOf: "" };
+/** Provenance for a cell: the live source when it wins, else the curated/sample note. */
+export function provenanceFor(country: Country, ind: IndicatorMeta, live?: LiveSnapshot | null): Provenance | { source: string; asOf: string } {
+  if (usesLive(country, ind, live)) return liveGet(live, country.code, ind.key)!;
+  if (ind.field && country.sourced) return { source: "Report · Oct 2026", asOf: CURATED_BASELINE };
+  return { source: "Sample data", asOf: "" };
 }
 
 /** A stable illustrative time-series ending at the current (live-or-sample) value. */

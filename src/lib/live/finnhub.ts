@@ -33,7 +33,7 @@ export async function fetchIndexMoves(apiKey: string | undefined, revalidate = H
     entries.map(async ([country, symbol]) => {
       try {
         const res = await fetch(`${BASE}?symbol=${encodeURIComponent(symbol)}&token=${apiKey}`, {
-          next: { revalidate },
+          next: { revalidate }, signal: AbortSignal.timeout(4000),
         });
         if (!res.ok) return;
         const q = (await res.json()) as { dp?: number | null; c?: number | null };

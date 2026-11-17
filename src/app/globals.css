@@ -100,3 +100,84 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+@keyframes drift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* ── Headline-feature glass ─────────────────────────────────────────────────────── */
+
+/* Animated hairline border: a rotating conic gradient masked down to a 1px ring. */
+@property --hl-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes hl-spin { to { --hl-angle: 360deg; } }
+.hairline-glow {
+  padding: 1px;
+  background: conic-gradient(from var(--hl-angle), transparent 0deg, rgba(0, 208, 132, 0.75) 60deg,
+    rgba(34, 211, 238, 0.6) 120deg, transparent 180deg, rgba(59, 130, 246, 0.55) 260deg, transparent 320deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: hl-spin 7s linear infinite;
+  opacity: 0.85;
+}
+.hairline-glow.gold {
+  background: conic-gradient(from var(--hl-angle), transparent 0deg, rgba(251, 191, 36, 0.9) 70deg,
+    rgba(0, 208, 132, 0.7) 140deg, transparent 200deg, rgba(251, 191, 36, 0.5) 290deg, transparent 340deg);
+  animation-duration: 4.5s;
+}
+
+/* Deep "liquid" glass: frosted, saturated, with a specular top edge. */
+.glass-liquid {
+  @apply rounded-3xl border border-white/[0.09] backdrop-blur-2xl;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015) 40%),
+    rgba(8, 17, 31, 0.55);
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.03),
+    0 30px 80px -30px rgba(0, 0, 0, 0.85);
+}
+
+/* Cursor-follow sheen for glass tiles (set --mx/--my from JS). */
+.sheen { position: relative; }
+.sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(18rem 18rem at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, 0.09), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.sheen:hover::after { opacity: 1; }
+
+/* Time Machine range thumb */
+.tm-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 22px; width: 22px; border-radius: 9999px;
+  background: radial-gradient(circle at 35% 30%, #fff, #a7f3d0 35%, #00d084 70%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 0 6px rgba(0, 208, 132, 0.15), 0 0 24px rgba(0, 208, 132, 0.6);
+}
+.tm-range::-moz-range-thumb {
+  height: 22px; width: 22px; border-radius: 9999px;
+  background: radial-gradient(circle at 35% 30%, #fff, #a7f3d0 35%, #00d084 70%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 0 6px rgba(0, 208, 132, 0.15), 0 0 24px rgba(0, 208, 132, 0.6);
+}
+.tm-range::-webkit-slider-runnable-track { background: transparent; height: 24px; }
+.tm-range::-moz-range-track { background: transparent; }
+
+/* Ticker marquee (kept here, not inline, so server and client HTML match) */
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.ticker-track { animation: marquee 40s linear infinite; }
+.ticker-track:hover { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .ticker-track { animation: none !important; } }

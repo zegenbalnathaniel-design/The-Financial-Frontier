@@ -26,7 +26,7 @@ export default function BentoNav() {
           <p className="mt-2 font-mono text-sm text-emerald">{latest?.month}</p>
           <p className="mt-3 max-w-md text-sm leading-relaxed text-muted line-clamp-3">{latest?.standfirst}</p>
           <div className="mt-6 flex items-center gap-2 text-xs text-muted2">
-            <span>{latest?.pageCount ?? "—"} pages</span><span>·</span><span>{latest?.sources.length ?? 0} sources</span>
+            <span>{latest?.pdf ? `${latest?.pageCount ?? "—"} pages` : "Web edition"}</span><span>·</span><span>{latest?.sources.length ?? 0} sources</span>
           </div>
           <div className="pointer-events-none absolute -right-8 -bottom-8 h-40 w-40 rounded-full bg-emerald/10 blur-2xl transition-opacity group-hover:opacity-80" />
         </Link>

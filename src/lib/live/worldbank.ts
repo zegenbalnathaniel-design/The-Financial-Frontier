@@ -23,7 +23,7 @@ export async function wbFetchIndicator(
   if (codes.length === 0) return out;
   // mrv=4 → last 4 years, so we can skip null latest-year gaps.
   const url = `${BASE}/country/${codes.join(";")}/indicator/${wbCode}?format=json&per_page=${codes.length * 4}&mrv=4`;
-  const res = await fetch(url, { next: { revalidate } });
+  const res = await fetch(url, { next: { revalidate }, signal: AbortSignal.timeout(5000) });
   if (!res.ok) throw new Error(`World Bank ${wbCode}: HTTP ${res.status}`);
   const json = (await res.json()) as [unknown, Array<{ country?: { id?: string }; date?: string; value?: number | null }>];
   const rows = Array.isArray(json?.[1]) ? json[1] : [];

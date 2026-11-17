@@ -33,7 +33,7 @@ The newest report is chosen by **`publishedAt`**, not the filename — always se
 ## Fields (see content/reports/2026-06.json for a full example)
 
 - **Identity:** `slug`, `issueNumber`, `month`, `publishedAt`, `title`, `standfirst`, `tags`, `pageCount`
-- **`pdf`:** `{ "screen": "/reports/...", "press": "/reports/..." }` — paths relative to `public/`. `press` is optional.
+- **`pdf`** (optional): `{ "screen": "/reports/...", "press": "/reports/..." }` — paths relative to `public/`. `press` is optional. **Omit `pdf` entirely for a web-only issue** — the PDF section hides and cards say "Web edition".
 - **`editorsNote`** (optional): a pull-quote near the top of the report page.
 - **`indicators[]`:** `{ label, value, note?, tone }` — first 4 show on the homepage, first 8 on the dashboard, all on the report page + ticker. `tone` ∈ up | down | gold | blue | cyan | violet | neutral.
 - **`highlights[]`:** `{ tag?, title, blurb }` — the story cards.
@@ -43,6 +43,9 @@ The newest report is chosen by **`publishedAt`**, not the filename — always se
   - `activityIndex: [{name, value}]` + `activityBaseline` + `activityTitle` — horizontal bars vs a threshold (green above, red below)
   - `policy: { tightening[], easing[], holding[] }`
 - **`sources[]`:** `{ name, url? }`.
+- **`countrySnapshot`** (optional, powers the globe's **Time Machine**): month-end figures per economy,
+  `{ "US": { "growth": 2.3, "inflation": 3.7, "rate": 3.875 }, ... }`. Only include figures you have a
+  source for — economies with no figure that month show as grey hubs. Values carry forward month to month.
 
 ## Publishing
 

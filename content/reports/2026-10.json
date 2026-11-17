@@ -1,0 +1,273 @@
+{
+  "slug": "2026-10",
+  "issueNumber": 5,
+  "month": "October 2026",
+  "publishedAt": "2026-11-01",
+  "title": "Resilience Under Strain",
+  "standfirst": "The IMF nudged world growth up to 3.1% while warning resilience is wearing thin. US GDP grew 3.4% in Q3, Brent climbed toward $117, Big Tech slid, and Christine Lagarde said she will leave the ECB early.",
+  "tags": [
+    "IMF WEO",
+    "Q3 GDP",
+    "$117 Oil",
+    "Big Tech Slide",
+    "Lagarde Exit"
+  ],
+  "editorsNote": "October's data said the economy is strong; its markets said it is fragile. Both are right. Growth is being carried by fewer countries, fewer companies and — as oil climbs — fewer margins for error.",
+  "indicators": [
+    {
+      "label": "Global growth, 2026",
+      "value": "3.1%",
+      "note": "IMF WEO, 13 Oct (+0.1pt)",
+      "tone": "gold"
+    },
+    {
+      "label": "US Q3 GDP (ann.)",
+      "value": "3.4%",
+      "note": "Advance estimate, 29 Oct",
+      "tone": "up"
+    },
+    {
+      "label": "US CPI (y/y)",
+      "value": "3.7%",
+      "note": "September, released 14 Oct",
+      "tone": "down"
+    },
+    {
+      "label": "US unemployment",
+      "value": "4.2%",
+      "note": "September; payrolls +29k",
+      "tone": "neutral"
+    },
+    {
+      "label": "Fed funds target",
+      "value": "3.75–4.00%",
+      "note": "Held 28 Oct, 10–2",
+      "tone": "blue"
+    },
+    {
+      "label": "Brent crude",
+      "value": "~$117",
+      "note": "+14% in October, 4th monthly gain",
+      "tone": "down"
+    },
+    {
+      "label": "Nasdaq Composite",
+      "value": "–5.3%",
+      "note": "Worst month since March 2025",
+      "tone": "down"
+    },
+    {
+      "label": "Euro-area GDP, Q3",
+      "value": "+0.4%",
+      "note": "q/q; +1.3% y/y",
+      "tone": "blue"
+    },
+    {
+      "label": "Euro-area inflation",
+      "value": "4.0%",
+      "note": "October flash",
+      "tone": "down"
+    },
+    {
+      "label": "China Q3 GDP",
+      "value": "4.5%",
+      "note": "y/y, beat 4.4% forecast",
+      "tone": "up"
+    },
+    {
+      "label": "RBI repo rate",
+      "value": "5.50%",
+      "note": "+25bp, 7 Oct — first hike since 2023",
+      "tone": "blue"
+    },
+    {
+      "label": "Equal-weight S&P 500",
+      "value": "+5.0%",
+      "note": "vs –0.9% headline",
+      "tone": "up"
+    }
+  ],
+  "highlights": [
+    {
+      "tag": "Global",
+      "title": "Up a tenth, down in spirit",
+      "blurb": "The IMF raised 2026 growth to 3.1% but noted just 32 economies now produce 95% of global growth, versus 54 in April. Risks are skewed to the downside."
+    },
+    {
+      "tag": "US",
+      "title": "A 3.4% quarter",
+      "blurb": "US real GDP grew at a 3.4% annualised pace in Q3, up from 2.2% in Q2, carried by consumers, business investment and government spending."
+    },
+    {
+      "tag": "Markets",
+      "title": "The great rotation",
+      "blurb": "The headline S&P 500 fell about 0.9% while the equal-weight index rose 5%. Nvidia slid around 10% and ceded the world's-most-valuable crown to Apple."
+    },
+    {
+      "tag": "Energy",
+      "title": "Tankers, mines and $117 oil",
+      "blurb": "Attacks on shipping near Hormuz drove Brent up about 14% in October — its fourth straight monthly gain."
+    },
+    {
+      "tag": "Europe",
+      "title": "Lagarde's early exit",
+      "blurb": "The ECB held its deposit rate at 2.50% on 29 October, and Lagarde announced she will step down on 7 February 2027, nine months early. Euro inflation hit 4.0%."
+    },
+    {
+      "tag": "Asia",
+      "title": "India turns hawkish",
+      "blurb": "The RBI raised its repo rate 25bp to 5.50% and moved to 'calibrated tightening', saying the next step can only be a hike or a pause."
+    }
+  ],
+  "charts": {
+    "growthForecast": [
+      {
+        "name": "IMF (Oct)",
+        "value": 3.1
+      },
+      {
+        "name": "IMF (Jul)",
+        "value": 3.0
+      },
+      {
+        "name": "World Bank (Jun)",
+        "value": 2.5
+      }
+    ],
+    "growthVsInflation": [
+      {
+        "name": "US Q3 GDP",
+        "value": 3.4,
+        "note": "annualised"
+      },
+      {
+        "name": "US CPI",
+        "value": 3.7,
+        "note": "y/y, September"
+      },
+      {
+        "name": "Euro infl.",
+        "value": 4.0,
+        "note": "October flash"
+      },
+      {
+        "name": "China GDP",
+        "value": 4.5,
+        "note": "Q3 y/y"
+      }
+    ],
+    "activityTitle": "Market returns, October (%)",
+    "activityBaseline": 0,
+    "activityIndex": [
+      {
+        "name": "Brent",
+        "value": 14.0
+      },
+      {
+        "name": "Equal-wt S&P",
+        "value": 5.0
+      },
+      {
+        "name": "S&P 500",
+        "value": -0.9
+      },
+      {
+        "name": "Nasdaq Comp.",
+        "value": -5.3
+      },
+      {
+        "name": "Nvidia",
+        "value": -10.0
+      }
+    ],
+    "policy": {
+      "tightening": [
+        "Reserve Bank of India (+25bp to 5.50%)"
+      ],
+      "easing": [],
+      "holding": [
+        "Federal Reserve (3.75–4.00%, 10–2)",
+        "ECB (deposit 2.50%)",
+        "Bank of Japan (1.25%)"
+      ]
+    }
+  },
+  "countrySnapshot": {
+    "US": {
+      "growth": 2.3,
+      "inflation": 3.7,
+      "rate": 3.875
+    },
+    "GB": {
+      "rate": 3.75
+    },
+    "JP": {
+      "rate": 1.25
+    },
+    "IN": {
+      "growth": 7.0,
+      "rate": 5.5
+    },
+    "CN": {
+      "growth": 4.5
+    },
+    "DE": {
+      "inflation": 4.0,
+      "rate": 2.5
+    },
+    "FR": {
+      "inflation": 4.0,
+      "rate": 2.5
+    },
+    "IT": {
+      "inflation": 4.0,
+      "rate": 2.5
+    },
+    "ES": {
+      "inflation": 4.0,
+      "rate": 2.5
+    }
+  },
+  "sources": [
+    {
+      "name": "IMF — World Economic Outlook, October 2026",
+      "url": "https://www.imf.org/en/publications/weo/issues/2026/10/13/world-economic-outlook-october-2026"
+    },
+    {
+      "name": "BEA — Gross Domestic Product",
+      "url": "https://bea.gov/data/gdp/gross-domestic-product"
+    },
+    {
+      "name": "Advisor Perspectives — Q3 GDP advance estimate: 3.4%",
+      "url": "https://www.advisorperspectives.com/dshort/updates/2026/10/29/q3-gdp-advance-estimate-real-gdp-at-3-4"
+    },
+    {
+      "name": "CNBC — Jobs report, September 2026",
+      "url": "https://www.cnbc.com/2026/10/02/jobs-report-september-2026.html"
+    },
+    {
+      "name": "Fox Business — Fed holds rates, 28 Oct 2026",
+      "url": "https://www.foxbusiness.com/economy/federal-reserve-interest-rate-decision-october-28-2026"
+    },
+    {
+      "name": "Eurostat — GDP up by 0.4% in the euro area (Q3)",
+      "url": "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-13112026-ap"
+    },
+    {
+      "name": "gov.cn — China's GDP expands 4.5% in Q3",
+      "url": "https://english.www.gov.cn/archive/statistics/202610/19/content_WS6ad5a59bc6d00ca5f9a0dc86.html"
+    },
+    {
+      "name": "Banque de France — Lagarde to step down 7 February 2027",
+      "url": "https://www.banque-france.fr/en/press-release/ecb-president-lagarde-step-down-7-february-2027"
+    },
+    {
+      "name": "SCC Online — RBI hikes repo rate to 5.50%",
+      "url": "https://www.scconline.com/blog/post/2026/10/09/rbi-hikes-repo-rate-to-5-50-percent-october-2026/"
+    },
+    {
+      "name": "Vested — October 2026 market review",
+      "url": "https://vestedfinance.com/blog/managed-portfolio/the-great-rotation-big-tech-stumbles-oil-hits-117-and-the-fed-holds-its-fire-october-26-in-review/"
+    }
+  ]
+}

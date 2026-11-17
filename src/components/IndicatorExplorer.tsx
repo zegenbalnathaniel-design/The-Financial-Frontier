@@ -9,7 +9,7 @@ import {
   INDICATORS, FAMILIES, TIMEFRAMES, ALL_COUNTRIES, currentValue, series, fmt, type IndicatorMeta,
 } from "@/lib/indicators";
 import { useLive } from "@/components/live/LiveDataProvider";
-import { liveGet } from "@/lib/live/types";
+import { usesLive } from "@/lib/indicators";
 
 const SERIES_COLORS = ["#00D084", "#3B82F6", "#22D3EE", "#7C3AED", "#FBBF24", "#F65B5B", "#8598B4", "#34D399"];
 const axis = { fill: "#586A86", fontSize: 11, fontFamily: "var(--font-mono)" };
@@ -55,7 +55,7 @@ export default function IndicatorExplorer() {
   );
   // How many of the shown economies have a real sourced value for this indicator.
   const liveCount = useMemo(
-    () => chosen.filter((c) => liveGet(live, c.code, ind.key)).length,
+    () => chosen.filter((c) => usesLive(c, ind, live)).length,
     [chosen, ind, live],
   );
 

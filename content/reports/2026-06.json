@@ -99,5 +99,11 @@
     { "name": "Richmond Fed — National Economic Indicators, 22 June 2026", "url": "https://www.richmondfed.org/-/media/richmondfedorg/research/national_economy/national_economic_indicators/pdf/all_charts.pdf" },
     { "name": "India Dept. of Economic Affairs — Monthly Economic Review, June 2026", "url": "https://dea.gov.in/files/monthly_economic_report_documents/Monthly%20Economic%20Review%20June%202026.pdf" },
     { "name": "Rio Times — Global Economy Briefing, 26 June 2026", "url": "https://www.riotimesonline.com/global-economy-briefing-june-26-2026/" }
-  ]
+  ],
+  "countrySnapshot": {
+    "US": { "growth": 1.6, "inflation": 3.8, "rate": 3.625 },
+    "DE": { "inflation": 2.8, "rate": 2.25 }, "FR": { "inflation": 2.8, "rate": 2.25 },
+    "IT": { "inflation": 2.8, "rate": 2.25 }, "ES": { "inflation": 2.8, "rate": 2.25 },
+    "GB": { "rate": 3.75 }, "JP": { "rate": 1.0 }, "IN": { "growth": 6.5, "rate": 5.25 }
+  }
 }

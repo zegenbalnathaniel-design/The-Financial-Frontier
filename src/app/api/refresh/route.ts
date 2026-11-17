@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 
-// Hit daily by Vercel Cron (see vercel.json) to refresh the live dataset. Revalidates
-// the root layout, which re-runs getLiveSnapshot() and re-fetches every source.
+// Hit daily by Vercel Cron (see vercel.json) to refresh the live data routes, so the
+// first visitor of the day gets warm, current data instead of paying for a cold fetch.
 // Optionally protected: set CRON_SECRET and Vercel sends `Authorization: Bearer <secret>`.
 export const dynamic = "force-dynamic";
 
@@ -14,6 +14,6 @@ export async function GET(req: Request) {
       return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
     }
   }
-  revalidatePath("/", "layout");
+  for (const p of ["/api/snapshot", "/api/markets", "/api/story"]) revalidatePath(p);
   return NextResponse.json({ ok: true, revalidatedAt: new Date().toISOString() });
 }

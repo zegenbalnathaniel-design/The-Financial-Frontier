@@ -21,8 +21,8 @@ export async function fetchFxYtd(currencies: string[], revalidate = DAY): Promis
 
   const year = new Date().getUTCFullYear();
   const [latest, start] = await Promise.all([
-    fetch(`${BASE}/latest?base=USD&symbols=${symbols.join(",")}`, { next: { revalidate } }).then(okJson),
-    fetch(`${BASE}/${year}-01-01?base=USD&symbols=${symbols.join(",")}`, { next: { revalidate } }).then(okJson),
+    fetch(`${BASE}/latest?base=USD&symbols=${symbols.join(",")}`, { next: { revalidate }, signal: AbortSignal.timeout(5000) }).then(okJson),
+    fetch(`${BASE}/${year}-01-01?base=USD&symbols=${symbols.join(",")}`, { next: { revalidate }, signal: AbortSignal.timeout(5000) }).then(okJson),
   ]);
 
   const latestRates = latest?.rates ?? {};

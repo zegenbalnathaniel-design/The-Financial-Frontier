@@ -1,7 +1,7 @@
 // Country dataset powering the 3D globe and the economic network.
 //
 // IMPORTANT — DATA HONESTY: values here are the FALLBACK dataset — illustrative sample
-// data seeded with June 2026 report figures (see content/reports/2026-06.json). At
+// data seeded with our latest report figures (Oct 2026 issue, plus the BoE's 4 Nov hike). At
 // runtime, src/lib/live/ overlays REAL sourced values on top of these wherever a free
 // API (World Bank, ECB/Frankfurter) or a keyed API (FRED, Finnhub) returns one; those
 // cells are marked "live" in the UI. Anything with no live source keeps the sample
@@ -27,12 +27,12 @@ export interface Country {
     change: number;     // illustrative daily change %
     currency: string;
   };
-  sourced?: boolean;    // true where the figure is grounded in our June report
+  sourced?: boolean;    // true where the figure is grounded in our monthly reports
 }
 
 export const COUNTRIES: Country[] = [
   { code: "US", name: "United States", lat: 38, lon: -97, region: "North America", groups: ["G7","G20","OECD","USMCA","Developed"], hub: true,
-    data: { growth: 1.6, inflation: 3.8, rate: 5.375, market: "S&P 500", change: -0.9, currency: "USD" }, sourced: true },
+    data: { growth: 2.3, inflation: 3.7, rate: 3.875, market: "S&P 500", change: -0.9, currency: "USD" }, sourced: true },
   { code: "CA", name: "Canada", lat: 56, lon: -106, region: "North America", groups: ["G7","G20","OECD","USMCA","Developed"], hub: true,
     data: { growth: 0.7, inflation: 2.9, rate: 4.25, market: "S&P/TSX", change: -0.4, currency: "CAD" }, sourced: true },
   { code: "MX", name: "Mexico", lat: 23, lon: -102, region: "North America", groups: ["G20","OECD","USMCA","Emerging"],
@@ -44,15 +44,15 @@ export const COUNTRIES: Country[] = [
   { code: "CL", name: "Chile", lat: -35, lon: -71, region: "South America", groups: ["OECD","Emerging"],
     data: { growth: 2.3, inflation: 3.6, rate: 5.0, market: "IPSA", change: 0.2, currency: "CLP" } },
   { code: "GB", name: "United Kingdom", lat: 54, lon: -2, region: "Europe", groups: ["G7","G20","OECD","Developed"], hub: true,
-    data: { growth: 1.0, inflation: 3.1, rate: 4.75, market: "FTSE 100", change: -0.5, currency: "GBP" } },
+    data: { growth: 1.0, inflation: 3.5, rate: 4.0, market: "FTSE 100", change: -0.5, currency: "GBP" }, sourced: true },
   { code: "DE", name: "Germany", lat: 51, lon: 10, region: "Europe", groups: ["G7","G20","EU","EuroArea","OECD","Developed"], hub: true,
-    data: { growth: 0.2, inflation: 2.8, rate: 2.75, market: "DAX", change: -0.7, currency: "EUR" }, sourced: true },
+    data: { growth: 0.2, inflation: 4.0, rate: 2.5, market: "DAX", change: -0.7, currency: "EUR" }, sourced: true },
   { code: "FR", name: "France", lat: 46, lon: 2, region: "Europe", groups: ["G7","G20","EU","EuroArea","OECD","Developed"], hub: true,
-    data: { growth: 0.4, inflation: 2.6, rate: 2.75, market: "CAC 40", change: -0.6, currency: "EUR" }, sourced: true },
+    data: { growth: 0.4, inflation: 4.0, rate: 2.5, market: "CAC 40", change: -0.6, currency: "EUR" }, sourced: true },
   { code: "IT", name: "Italy", lat: 42, lon: 12, region: "Europe", groups: ["G7","G20","EU","EuroArea","OECD","Developed"],
-    data: { growth: 0.5, inflation: 2.9, rate: 2.75, market: "FTSE MIB", change: -0.5, currency: "EUR" }, sourced: true },
+    data: { growth: 0.5, inflation: 4.0, rate: 2.5, market: "FTSE MIB", change: -0.5, currency: "EUR" }, sourced: true },
   { code: "ES", name: "Spain", lat: 40, lon: -4, region: "Europe", groups: ["G20","EU","EuroArea","OECD","Developed"],
-    data: { growth: 1.4, inflation: 3.0, rate: 2.75, market: "IBEX 35", change: -0.3, currency: "EUR" } },
+    data: { growth: 1.4, inflation: 4.0, rate: 2.5, market: "IBEX 35", change: -0.3, currency: "EUR" }, sourced: true },
   { code: "CH", name: "Switzerland", lat: 47, lon: 8, region: "Europe", groups: ["OECD","Developed"], hub: true,
     data: { growth: 1.2, inflation: 1.4, rate: 1.5, market: "SMI", change: -0.2, currency: "CHF" } },
   { code: "RU", name: "Russia", lat: 61, lon: 90, region: "Europe", groups: ["G20","BRICS","Emerging"],
@@ -68,11 +68,11 @@ export const COUNTRIES: Country[] = [
   { code: "KE", name: "Kenya", lat: 0, lon: 38, region: "Africa", groups: ["AfricanUnion","Frontier"],
     data: { growth: 5.2, inflation: 5.1, rate: 11.25, market: "NSE 20", change: 0.3, currency: "KES" } },
   { code: "IN", name: "India", lat: 22, lon: 79, region: "Asia", groups: ["G20","BRICS","SAARC","Emerging"], hub: true,
-    data: { growth: 6.5, inflation: 4.4, rate: 5.25, market: "Nifty 50", change: 0.4, currency: "INR" }, sourced: true },
+    data: { growth: 7.0, inflation: 4.4, rate: 5.5, market: "Nifty 50", change: 0.4, currency: "INR" }, sourced: true },
   { code: "CN", name: "China", lat: 35, lon: 104, region: "Asia", groups: ["G20","BRICS","APEC","Emerging"], hub: true,
     data: { growth: 4.5, inflation: 0.9, rate: 3.1, market: "CSI 300", change: 0.2, currency: "CNY" }, sourced: true },
   { code: "JP", name: "Japan", lat: 36, lon: 138, region: "Asia", groups: ["G7","G20","OECD","APEC","Developed"], hub: true,
-    data: { growth: 0.9, inflation: 2.5, rate: 0.5, market: "Nikkei 225", change: -0.8, currency: "JPY" }, sourced: true },
+    data: { growth: 0.9, inflation: 2.5, rate: 1.25, market: "Nikkei 225", change: -0.8, currency: "JPY" }, sourced: true },
   { code: "KR", name: "South Korea", lat: 36, lon: 128, region: "Asia", groups: ["G20","OECD","APEC","Developed"], hub: true,
     data: { growth: 2.1, inflation: 3.2, rate: 2.75, market: "KOSPI", change: -0.6, currency: "KRW" }, sourced: true },
   { code: "ID", name: "Indonesia", lat: -2, lon: 118, region: "Asia", groups: ["G20","ASEAN","APEC","Emerging"],

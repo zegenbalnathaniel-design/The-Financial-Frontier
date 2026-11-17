@@ -16,7 +16,7 @@ export default function ReportCard({ report, featured = false }: { report: Repor
       <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted">{report.standfirst}</p>
       <div className="mt-5 flex items-center gap-2 text-xs text-muted2">
         <FileText size={14} aria-hidden />
-        <span>{report.pageCount ?? "—"} pages</span><span aria-hidden>·</span><span>{report.sources.length} sources</span>
+        <span>{report.pdf ? `${report.pageCount ?? "—"} pages` : "Web edition"}</span><span aria-hidden>·</span><span>{report.sources.length} sources</span>
       </div>
     </Link>
   );

@@ -8,13 +8,21 @@ import ReportCard from "@/components/ReportCard";
 import StatCard from "@/components/StatCard";
 import Reveal from "@/components/Reveal";
 import Hero from "@/components/Hero";
-import GlobeSection from "@/components/three/GlobeSection";
+import GlobeSection, { type TimelineMonth } from "@/components/three/GlobeSection";
+import MarketPulse from "@/components/markets/MarketPulse";
+import StoryOfTheDay from "@/components/StoryOfTheDay";
 import BentoNav from "@/components/BentoNav";
 import IndicatorStrip from "@/components/IndicatorStrip";
 
 export default function HomePage() {
   const latest = getLatestReport();
-  const older = getAllReports().slice(1, 4);
+  const all = getAllReports();
+  const older = all.slice(1, 4);
+  // Oldest → newest, one Time Machine stop per published issue.
+  const timeline: TimelineMonth[] = [...all].reverse().map((r) => ({
+    slug: r.slug, label: r.month.slice(0, 3), month: r.month, title: r.title,
+    indicators: r.indicators.slice(0, 4), snapshot: r.countrySnapshot ?? {},
+  }));
 
   return (
     <>
@@ -28,16 +36,33 @@ export default function HomePage() {
 
       {latest && <Ticker indicators={latest.indicators} />}
 
+      <section className="shell pt-16">
+        <StoryOfTheDay />
+      </section>
+
+      <section className="shell py-20">
+        <Reveal>
+          <p className="kicker">Today&rsquo;s markets</p>
+          <h2 className="h-display mt-4 text-3xl sm:text-4xl">Market Pulse</h2>
+          <p className="mt-3 max-w-2xl text-muted">
+            The biggest US companies on one live board — sized by value, coloured by today&rsquo;s move. Hover any tile
+            for its day range; the top riser of the session gets the spotlight.
+          </p>
+        </Reveal>
+        <div className="mt-10"><MarketPulse /></div>
+      </section>
+
       <section className="shell py-20">
         <Reveal>
           <p className="kicker">Signature experience · 01</p>
           <h2 className="h-display mt-4 text-3xl sm:text-4xl">The Global Intelligence Globe</h2>
           <p className="mt-3 max-w-2xl text-muted">
             Every glowing node is a financial hub. Recolour the planet by growth, inflation, rates or
-            markets — then click any hub for its live intelligence panel.
+            markets, click any hub for its live intelligence panel — then scrub the Time Machine to replay
+            the year issue by issue.
           </p>
         </Reveal>
-        <div className="mt-10"><GlobeSection /></div>
+        <div className="mt-10"><GlobeSection timeline={timeline} /></div>
       </section>
 
       {latest && (

@@ -17,7 +17,7 @@ export default function NetworkPage() {
       </Reveal>
       <div className="mt-10"><NetworkSection /></div>
       <p className="mt-6 max-w-3xl text-sm text-muted2">
-        This visualisation runs on illustrative sample data seeded with our June 2026 figures. Wire a live
+        This visualisation runs on illustrative sample data seeded with our latest monthly-report figures. Wire a live
         source (IMF, World Bank, FRED) in <code className="text-emerald">src/lib/countries.ts</code> to make it authoritative.
       </p>
     </div>

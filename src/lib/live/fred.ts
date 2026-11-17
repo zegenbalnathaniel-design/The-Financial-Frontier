@@ -43,7 +43,7 @@ export async function fetchFred(apiKey: string | undefined, revalidate = DAY): P
     FRED_SERIES.map(async ({ series, country, key }) => {
       try {
         const url = `${BASE}?series_id=${series}&api_key=${apiKey}&file_type=json&sort_order=desc&limit=1`;
-        const res = await fetch(url, { next: { revalidate } });
+        const res = await fetch(url, { next: { revalidate }, signal: AbortSignal.timeout(5000) });
         if (!res.ok) return;
         const json = (await res.json()) as { observations?: Array<{ date: string; value: string }> };
         const obs = json.observations?.[0];

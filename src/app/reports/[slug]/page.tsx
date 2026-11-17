@@ -72,10 +72,12 @@ export default async function ReportPage({ params }: Props) {
         </div>
       </section>
 
-      <section className="mt-20">
-        <Reveal><div className="flex flex-wrap items-end justify-between gap-4"><h2 className="h-display text-2xl">Read the full issue</h2><p className="text-sm text-muted2">{report.pageCount ?? "—"} pages</p></div></Reveal>
-        <Reveal delay={0.06}><div className="mt-6"><LazyVisible minHeight="85vh"><PdfViewer screen={report.pdf.screen} press={report.pdf.press} title={report.title} pageCount={report.pageCount} /></LazyVisible></div></Reveal>
-      </section>
+      {report.pdf && (
+        <section className="mt-20">
+          <Reveal><div className="flex flex-wrap items-end justify-between gap-4"><h2 className="h-display text-2xl">Read the full issue</h2><p className="text-sm text-muted2">{report.pageCount ?? "—"} pages</p></div></Reveal>
+          <Reveal delay={0.06}><div className="mt-6"><LazyVisible minHeight="85vh"><PdfViewer screen={report.pdf.screen} press={report.pdf.press} title={report.title} pageCount={report.pageCount} /></LazyVisible></div></Reveal>
+        </section>
+      )}
 
       <section className="mt-20">
         <Reveal><h2 className="h-display text-2xl">Sources &amp; method</h2><p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">We separate fact (sourced figures), analysis (our reading) and opinion (labelled). Forecasts are scenarios — where forecasters disagree, we show the range.</p></Reveal>

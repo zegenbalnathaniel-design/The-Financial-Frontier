@@ -1,0 +1,260 @@
+{
+  "slug": "2026-07",
+  "issueNumber": 2,
+  "month": "July 2026",
+  "publishedAt": "2026-08-01",
+  "title": "The Ceasefire That Wasn't",
+  "standfirst": "US strikes on Iran shattered a fragile truce and sent crude up more than 20%. The Fed held for a fifth straight meeting with three dissents, the IMF trimmed global growth to 3.0%, and the AI trade had its worst month in over a year.",
+  "tags": [
+    "Hormuz",
+    "Fed Split",
+    "IMF Update",
+    "Tech Sell-off",
+    "Energy Rally"
+  ],
+  "editorsNote": "July was the month markets learned a ceasefire is only a pause. Energy did the work that tech had done all year — and a Fed with three dissenters told us the next move is more likely up than down.",
+  "indicators": [
+    {
+      "label": "Global growth, 2026",
+      "value": "3.0%",
+      "note": "IMF WEO Update, 8 July (–0.1pt)",
+      "tone": "gold"
+    },
+    {
+      "label": "Fed funds target",
+      "value": "3.50–3.75%",
+      "note": "Held 29 July, 9–3 vote",
+      "tone": "blue"
+    },
+    {
+      "label": "US CPI (y/y)",
+      "value": "3.5%",
+      "note": "June, released mid-July",
+      "tone": "down"
+    },
+    {
+      "label": "US Q2 GDP (ann.)",
+      "value": "1.5%",
+      "note": "Advance estimate",
+      "tone": "blue"
+    },
+    {
+      "label": "WTI crude, July",
+      "value": "+22%",
+      "note": "Closed near $84.67",
+      "tone": "down"
+    },
+    {
+      "label": "Nasdaq Composite",
+      "value": "–3.2%",
+      "note": "July; Nasdaq 100 –6.6%",
+      "tone": "down"
+    },
+    {
+      "label": "S&P 500 close",
+      "value": "7,490",
+      "note": "31 July, roughly flat on month",
+      "tone": "neutral"
+    },
+    {
+      "label": "Euro-area inflation",
+      "value": "2.9%",
+      "note": "July flash",
+      "tone": "gold"
+    },
+    {
+      "label": "Gold",
+      "value": "$4,107",
+      "note": "Futures, month-end",
+      "tone": "gold"
+    },
+    {
+      "label": "Energy sector",
+      "value": "+12.6%",
+      "note": "Top S&P sector in July",
+      "tone": "up"
+    },
+    {
+      "label": "India growth, 2026",
+      "value": "6.4%",
+      "note": "IMF, trimmed from 6.5%",
+      "tone": "up"
+    },
+    {
+      "label": "World trade growth",
+      "value": "3.5%",
+      "note": "IMF 2026, from 5.0% in 2025",
+      "tone": "cyan"
+    }
+  ],
+  "highlights": [
+    {
+      "tag": "Energy",
+      "title": "The truce breaks, the strait shuts",
+      "blurb": "Attacks on three commercial vessels and US strikes on Iran ended the spring ceasefire. With Hormuz again closed to commercial shipping, WTI rose about 22% in a month."
+    },
+    {
+      "tag": "Policy",
+      "title": "A Fed divided — upward",
+      "blurb": "The Fed held at 3.50–3.75% for a fifth meeting, but three voters wanted a hike. A split this wide hadn't been seen in a decade, and it leaned hawkish."
+    },
+    {
+      "tag": "Global",
+      "title": "The IMF splits the difference",
+      "blurb": "The July WEO Update put 2026 growth at 3.0% and 2027 at 3.4% — a war-driven supply shock pulling down, an AI investment boom pushing up."
+    },
+    {
+      "tag": "Markets",
+      "title": "The AI trade's worst month since 2025",
+      "blurb": "The Nasdaq 100 fell about 6.6% on doubts about AI capital spending, while the equal-weight S&P 500 gained 1.1%. The market didn't fall; it rotated."
+    },
+    {
+      "tag": "Labour",
+      "title": "A payrolls wobble",
+      "blurb": "July payrolls came in negative against expectations of a modest gain — a soft print that complicated the hawks' case without ending it."
+    },
+    {
+      "tag": "Europe",
+      "title": "Inflation turns the corner — upward",
+      "blurb": "Euro-area inflation edged up to 2.9% from 2.8%, the first step in what became a sharp autumn climb as energy fed through."
+    }
+  ],
+  "charts": {
+    "growthForecast": [
+      {
+        "name": "IMF (Jul)",
+        "value": 3.0
+      },
+      {
+        "name": "IMF (Apr)",
+        "value": 3.1
+      },
+      {
+        "name": "World Bank (Jun)",
+        "value": 2.5
+      }
+    ],
+    "growthVsInflation": [
+      {
+        "name": "US Q2 GDP",
+        "value": 1.5,
+        "note": "annualised, advance"
+      },
+      {
+        "name": "US CPI",
+        "value": 3.5,
+        "note": "y/y, June"
+      },
+      {
+        "name": "Euro infl.",
+        "value": 2.9,
+        "note": "July flash"
+      },
+      {
+        "name": "Global infl.",
+        "value": 4.7,
+        "note": "IMF 2026"
+      }
+    ],
+    "activityTitle": "S&P 500 sector returns, July (%)",
+    "activityBaseline": 0,
+    "activityIndex": [
+      {
+        "name": "Energy",
+        "value": 12.6
+      },
+      {
+        "name": "Equal-wt S&P",
+        "value": 1.1
+      },
+      {
+        "name": "S&P 500",
+        "value": 0.0
+      },
+      {
+        "name": "Nasdaq Comp.",
+        "value": -3.2
+      },
+      {
+        "name": "Technology",
+        "value": -3.4
+      },
+      {
+        "name": "Nasdaq 100",
+        "value": -6.6
+      }
+    ],
+    "policy": {
+      "tightening": [],
+      "easing": [],
+      "holding": [
+        "Federal Reserve (3.50–3.75%, 3 dissents for a hike)",
+        "ECB (deposit 2.25%)",
+        "Bank of England (3.75%)"
+      ]
+    }
+  },
+  "countrySnapshot": {
+    "US": {
+      "growth": 2.3,
+      "inflation": 3.5,
+      "rate": 3.625
+    },
+    "GB": {
+      "rate": 3.75
+    },
+    "JP": {
+      "rate": 1.0
+    },
+    "IN": {
+      "growth": 6.4,
+      "rate": 5.25
+    },
+    "DE": {
+      "inflation": 2.9,
+      "rate": 2.25
+    },
+    "FR": {
+      "inflation": 2.9,
+      "rate": 2.25
+    },
+    "IT": {
+      "inflation": 2.9,
+      "rate": 2.25
+    },
+    "ES": {
+      "inflation": 2.9,
+      "rate": 2.25
+    }
+  },
+  "sources": [
+    {
+      "name": "IMF — World Economic Outlook Update, July 2026",
+      "url": "https://www.imf.org/en/publications/weo/issues/2026/07/08/world-economic-outlook-update-july-2026"
+    },
+    {
+      "name": "CNBC — Fed meeting recap, 29 July 2026",
+      "url": "https://www.cnbc.com/2026/07/29/fed-meeting-today-live-updates.html"
+    },
+    {
+      "name": "Al Jazeera — Oil surges as US strikes Iran, 8 July 2026",
+      "url": "https://www.aljazeera.com/news/2026/7/8/oil-prices-surge-as-us-strikes-iran-reversing-fall-to-pre-war-levels"
+    },
+    {
+      "name": "Eurostat — Euro indicators: annual inflation",
+      "url": "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-19082026-ap"
+    },
+    {
+      "name": "Tapeboard — July 2026 stock market recap",
+      "url": "https://tapeboard.com/blog/monthly-recap-2026-07"
+    },
+    {
+      "name": "PensionmarkMeridien — July market recap 2026",
+      "url": "https://pensionmarkmeridien.com/july-market-recap-2026/"
+    },
+    {
+      "name": "First Trust — A recap of July 2026",
+      "url": "https://www.ftportfolios.com/Commentary/MarketCommentary/2026/8/6/a-recap-of-july-2026"
+    }
+  ]
+}

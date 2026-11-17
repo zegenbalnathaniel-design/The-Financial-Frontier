@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
+import { OPEN_PALETTE_EVENT } from "@/components/CommandPalette";
 
 const links = [
   { href: "/reports", label: "Reports" },
@@ -40,9 +41,17 @@ export default function Nav() {
               );
             })}
           </ul>
+          <div className="flex items-center gap-3">
+          <button onClick={() => window.dispatchEvent(new Event(OPEN_PALETTE_EVENT))} aria-label="Search (Command K)"
+            className="group flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-muted backdrop-blur transition-colors hover:border-emerald/40 hover:text-ink">
+            <Search size={14} />
+            <span className="hidden text-xs xl:inline">Search</span>
+            <kbd className="hidden rounded border border-white/15 px-1 font-mono text-[10px] text-muted2 sm:inline">⌘K</kbd>
+          </button>
           <button className="text-muted lg:hidden" onClick={() => setOpen((v) => !v)} aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open}>
             {open ? <X size={22} /> : <Menu size={22} />}
           </button>
+          </div>
         </nav>
       </div>
       <div className="gradient-rule" />

@@ -1,0 +1,262 @@
+{
+  "slug": "2026-09",
+  "issueNumber": 4,
+  "month": "September 2026",
+  "publishedAt": "2026-10-01",
+  "title": "The Great Re-tightening",
+  "standfirst": "The Fed raised rates for the first time since 2023, the ECB and Bank of Japan hiked the same week, and Brent broke $100 as Washington rejected Iran's plan to reopen Hormuz. The 10-year Treasury hit its highest yield since 2002.",
+  "tags": [
+    "Fed Hike",
+    "ECB Hike",
+    "BoJ 30-Year High",
+    "$100 Oil",
+    "Bond Rout"
+  ],
+  "editorsNote": "For two years the question was when rates would fall. September changed the question to how high they go. Three of the world's biggest central banks tightened inside a single week — a coordination of worry, if not of policy.",
+  "indicators": [
+    {
+      "label": "Fed funds target",
+      "value": "3.75–4.00%",
+      "note": "+25bp, 16 Sep — first hike since 2023",
+      "tone": "blue"
+    },
+    {
+      "label": "ECB deposit rate",
+      "value": "2.50%",
+      "note": "+25bp in September",
+      "tone": "blue"
+    },
+    {
+      "label": "BoJ policy rate",
+      "value": "1.25%",
+      "note": "+25bp, 18 Sep — highest since 1995",
+      "tone": "blue"
+    },
+    {
+      "label": "Brent crude",
+      "value": "$103.53",
+      "note": "Quarter-end; ~+42% in Q3",
+      "tone": "down"
+    },
+    {
+      "label": "US 10-year yield",
+      "value": "5.29%",
+      "note": "Highest since 2002",
+      "tone": "down"
+    },
+    {
+      "label": "US CPI (y/y)",
+      "value": "3.4%",
+      "note": "August, released 11 Sep",
+      "tone": "down"
+    },
+    {
+      "label": "Euro-area inflation",
+      "value": "3.8%",
+      "note": "September flash",
+      "tone": "down"
+    },
+    {
+      "label": "Fed 2026 GDP projection",
+      "value": "2.3%",
+      "note": "Revised up, September SEP",
+      "tone": "up"
+    },
+    {
+      "label": "S&P 500, September",
+      "value": "–0.3%",
+      "note": "Equal-weight ~–4.8%",
+      "tone": "down"
+    },
+    {
+      "label": "Gold, September",
+      "value": "–3% to –7%",
+      "note": "Fell as real yields rose",
+      "tone": "gold"
+    },
+    {
+      "label": "Bank of England",
+      "value": "3.75%",
+      "note": "Held 6–3, three votes to hike",
+      "tone": "neutral"
+    },
+    {
+      "label": "Median S&P stock",
+      "value": "–5.1%",
+      "note": "Widest cap/equal gap since 2003",
+      "tone": "down"
+    }
+  ],
+  "highlights": [
+    {
+      "tag": "Policy",
+      "title": "The Fed hikes — unanimously",
+      "blurb": "A 12–0 vote lifted the target range to 3.75–4.00%. Officials signalled at least one more move by year-end, and Warsh's press conference turned an early rally into a sell-off."
+    },
+    {
+      "tag": "Policy",
+      "title": "Three banks, one week",
+      "blurb": "The ECB lifted its deposit rate to 2.50% and the Bank of Japan went to 1.25%, a 30-year high. The Bank of England held only by 6–3."
+    },
+    {
+      "tag": "Energy",
+      "title": "Brent breaks $100",
+      "blurb": "After the White House rejected Iran's offer to reopen the Strait within seven days, Brent briefly neared $110 and ended the quarter around $103."
+    },
+    {
+      "tag": "Bonds",
+      "title": "The long end cracks",
+      "blurb": "The 10-year Treasury yield hit 5.29%, its highest since 2002, as investors demanded more to hold government debt through an inflationary war."
+    },
+    {
+      "tag": "Markets",
+      "title": "A narrow, fragile market",
+      "blurb": "The S&P 500 slipped only about 0.3%, but the median stock fell 5.1% — one of the widest gaps between headline and typical stock since 2003."
+    },
+    {
+      "tag": "Europe",
+      "title": "Euro inflation hits 3.8%",
+      "blurb": "Energy inflation near 19% pushed headline euro-area inflation to 3.8%, even as core stayed around 2.5%."
+    }
+  ],
+  "charts": {
+    "growthForecast": [
+      {
+        "name": "Fed (US, Sep)",
+        "value": 2.3
+      },
+      {
+        "name": "IMF (World, Jul)",
+        "value": 3.0
+      },
+      {
+        "name": "World Bank (Jun)",
+        "value": 2.5
+      }
+    ],
+    "growthVsInflation": [
+      {
+        "name": "US CPI",
+        "value": 3.4,
+        "note": "y/y, August"
+      },
+      {
+        "name": "PCE (Fed proj.)",
+        "value": 3.7,
+        "note": "2026"
+      },
+      {
+        "name": "Euro infl.",
+        "value": 3.8,
+        "note": "September flash"
+      },
+      {
+        "name": "US 10y yield",
+        "value": 5.29,
+        "note": "peak"
+      }
+    ],
+    "activityTitle": "Policy rates after September (%)",
+    "activityBaseline": 0,
+    "activityIndex": [
+      {
+        "name": "India RBI",
+        "value": 5.25
+      },
+      {
+        "name": "Fed (top)",
+        "value": 4.0
+      },
+      {
+        "name": "BoE",
+        "value": 3.75
+      },
+      {
+        "name": "ECB depo",
+        "value": 2.5
+      },
+      {
+        "name": "BoJ",
+        "value": 1.25
+      }
+    ],
+    "policy": {
+      "tightening": [
+        "Federal Reserve (+25bp to 3.75–4.00%)",
+        "ECB (+25bp, deposit 2.50%)",
+        "Bank of Japan (+25bp to 1.25%)"
+      ],
+      "easing": [],
+      "holding": [
+        "Bank of England (3.75%, 6–3)",
+        "Reserve Bank of India (5.25%)"
+      ]
+    }
+  },
+  "countrySnapshot": {
+    "US": {
+      "inflation": 3.4,
+      "rate": 3.875,
+      "growth": 2.3
+    },
+    "GB": {
+      "rate": 3.75
+    },
+    "JP": {
+      "rate": 1.25
+    },
+    "IN": {
+      "rate": 5.25
+    },
+    "DE": {
+      "inflation": 3.8,
+      "rate": 2.5
+    },
+    "FR": {
+      "inflation": 3.8,
+      "rate": 2.5
+    },
+    "IT": {
+      "inflation": 3.8,
+      "rate": 2.5
+    },
+    "ES": {
+      "inflation": 3.8,
+      "rate": 2.5
+    }
+  },
+  "sources": [
+    {
+      "name": "CNBC — Fed hikes for the first time since 2023, 16 Sep 2026",
+      "url": "https://www.cnbc.com/2026/09/16/fed-meeting-today-live-updates.html"
+    },
+    {
+      "name": "Advisor Perspectives — Fed's interest rate decision, 16 Sep 2026",
+      "url": "https://www.advisorperspectives.com/dshort/updates/2026/09/16/feds-interest-rate-decision-september-16-2026"
+    },
+    {
+      "name": "CNBC — Bank of Japan raises rates to a 31-year high",
+      "url": "https://www.cnbc.com/2026/09/18/japan-raises-rates-30-year-high-yen-jgb.html"
+    },
+    {
+      "name": "Al Jazeera — Oil surges after Trump rejects Iran's Hormuz plan",
+      "url": "https://www.aljazeera.com/economy/2026/9/28/oil-prices-surge-after-trump-rejects-irans-plan-to-reopen-strait-of-hormuz"
+    },
+    {
+      "name": "Eurostat — Annual inflation up to 3.8% in the euro area",
+      "url": "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-16102026-ap"
+    },
+    {
+      "name": "Raymond James — Monthly market insights, September 2026",
+      "url": "https://www.raymondjames.com/schmittgroup/our-market-insights/2026/10/07/monthly-market-insights-september-2026"
+    },
+    {
+      "name": "Madison Partners — September 2026 market update",
+      "url": "https://www.themadisonpartners.com/september-2026-market-update/"
+    },
+    {
+      "name": "House of Commons Library — Interest rates and monetary policy",
+      "url": "https://commonslibrary.parliament.uk/research-briefings/sn02802/"
+    }
+  ]
+}

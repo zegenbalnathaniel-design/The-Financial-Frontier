@@ -49,6 +49,22 @@ Install `@splinetool/react-spline`, then replace the `<Globe />` / `<NetworkGrap
 - To make the 3D scenes authoritative, wire a live source (IMF/World Bank/FRED/ECB) into
   `src/lib/countries.ts`. Colours, panels and filters update automatically.
 
+## Live markets, Story of the Day & ⌘K (Nov 2026)
+
+| Feature | Where | Data |
+|---|---|---|
+| **Market Pulse** — glass heatmap of 28 major US stocks (size ≈ market cap, colour = today's move), index tiles, top riser / biggest faller spotlights with day-range bars | home `#markets` · `src/components/markets/MarketPulse.tsx` | Finnhub via `/api/markets` (5-min edge cache) |
+| **Story of the Day** — glass hero card → full-screen reader → "show on globe" | home · `src/components/StoryOfTheDay.tsx` | Finnhub news via `/api/story` (hourly); optional AI "why it matters" when `AI_GATEWAY_API_KEY` is set; falls back to the latest issue's lead story |
+| **Time Machine** — scrub Jun → Now to recolour the globe with each issue's month-end figures | under the globe · `GlobeSection.tsx` | `countrySnapshot` in each report JSON |
+| **⌘K palette** — search countries, stocks, reports, indicators, glossary; countries fly the globe | everywhere · `src/components/CommandPalette.tsx` | static `/api/search` |
+
+**Set `FINNHUB_API_KEY` in Vercel** (free key at finnhub.io) or the market board and news show an honest
+"feed offline" state — the site never invents prices. Stocks are listed in `src/lib/live/stockList.ts`.
+
+**Performance:** pages are fully static. Live data (`/api/snapshot`, `/api/markets`) is fetched client-side
+after first paint, every upstream call has a timeout, the globe borders are fetched and built once and
+shared, and WebGL only renders while on screen. The daily cron (`/api/refresh`) re-warms the data routes.
+
 ## Adding a monthly report
 
 See **ADDING-A-REPORT.md**. Short version: drop the PDF in `public/reports/`, copy
