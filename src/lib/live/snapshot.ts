@@ -10,22 +10,7 @@ import { wbFetchIndicator } from "./worldbank";
 import { fetchFxYtd } from "./frankfurter";
 import { fetchFred } from "./fred";
 import { fetchIndexMoves } from "./finnhub";
-
-// Our indicator key → World Bank series id (+ optional scale to the indicator's unit).
-// These are all annual; a daily refresh catches new releases.
-const WB_MAP: { key: string; wb: string; scale?: number }[] = [
-  { key: "gdpGrowth", wb: "NY.GDP.MKTP.KD.ZG" },
-  { key: "gdpPerCapita", wb: "NY.GDP.PCAP.CD" },
-  { key: "cpi", wb: "FP.CPI.TOTL.ZG" },
-  { key: "unemployment", wb: "SL.UEM.TOTL.ZS" },
-  { key: "currentAccount", wb: "BN.CAB.XOKA.GD.ZS" },
-  { key: "budgetBalance", wb: "GC.NLD.TOTL.GD.ZS" },
-  { key: "debtToGdp", wb: "GC.DOD.TOTL.GD.ZS" },
-  { key: "moneySupplyGrowth", wb: "FM.LBL.BMNY.ZG" },
-  { key: "fdiInflows", wb: "BX.KLT.DINV.CD.WD", scale: 1e-9 }, // USD → $bn
-  { key: "tradeBalance", wb: "NE.RSB.GNFS.CD", scale: 1e-9 }, // USD → $bn
-  { key: "marketCap", wb: "CM.MKT.LCAP.CD", scale: 1e-12 }, // USD → $tn
-];
+import { WB_MAP } from "@/lib/history"; // indicator key → World Bank series (+ unit scale)
 
 export async function getLiveSnapshot(): Promise<LiveSnapshot> {
   const codes = COUNTRIES.map((c) => c.code);

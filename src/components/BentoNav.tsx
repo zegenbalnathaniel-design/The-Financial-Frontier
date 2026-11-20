@@ -1,17 +1,13 @@
 import Link from "next/link";
 import { ArrowUpRight, FileText, CandlestickChart, LineChart, LayoutDashboard, GraduationCap } from "lucide-react";
-import Sparkline from "@/components/Sparkline";
+import HistorySparkline from "@/components/HistorySparkline";
 import TiltCard from "@/components/TiltCard";
 import { getLatestReport } from "@/lib/reports";
 import { GLOSSARY_COUNT } from "@/lib/glossary";
-import { INDICATORS, ALL_COUNTRIES, series } from "@/lib/indicators";
+import { INDICATORS } from "@/lib/indicators";
 
 export default function BentoNav() {
   const latest = getLatestReport();
-  const us = ALL_COUNTRIES.find((c) => c.code === "US")!;
-  const inr = ALL_COUNTRIES.find((c) => c.code === "IN")!;
-  const spark = series(us, INDICATORS[0], 24);
-  const spark2 = series(inr, INDICATORS[2], 24);
   const card = "glass group relative block h-full overflow-hidden p-6";
 
   return (
@@ -39,7 +35,7 @@ export default function BentoNav() {
             <ArrowUpRight size={16} className="text-muted2 transition-colors group-hover:text-electric" />
           </div>
           <p className="mt-4 text-sm text-muted">Build your own view — {INDICATORS.length} indicators, any economies.</p>
-          <div className="mt-4"><Sparkline data={spark} color="#3B82F6" w={200} h={40} /></div>
+          <div className="mt-4"><HistorySparkline code="US" indKey="gdpGrowth" color="#3B82F6" w={200} h={40} prefix="US GDP growth · " /></div>
         </Link>
       </TiltCard>
 
@@ -81,7 +77,7 @@ export default function BentoNav() {
           </div>
           <p className="mt-4 font-display text-3xl font-semibold text-ink">{GLOSSARY_COUNT}</p>
           <p className="mt-1 text-sm text-muted">glossary terms, plainly explained.</p>
-          <div className="mt-3"><Sparkline data={spark2} color="#22D3EE" w={200} h={30} fill={false} /></div>
+          <div className="mt-3"><HistorySparkline code="IN" indKey="cpi" color="#22D3EE" w={200} h={30} fill={false} prefix="India CPI inflation · " /></div>
         </Link>
       </TiltCard>
     </div>

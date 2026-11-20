@@ -6,8 +6,11 @@
 // current account, fiscal balance, debt, broad money, FDI, trade balance, market cap);
 // FRED adds policy rates & 10y yields; ECB/Frankfurter adds FX. Everything else falls
 // back to the deterministic placeholders below (stable across renders) and is labelled
-// as sample data in the UI. Historical points of the series are always illustrative —
-// only the latest point is anchored to the live value.
+// as sample data in the UI.
+//
+// Trend lines use REAL history (src/lib/history.ts → /api/history/[key]: World Bank
+// annual, FRED monthly). series() below is only the labelled sample fallback for
+// indicators/economies no source covers; it is never mixed with real points.
 
 import { COUNTRIES, type Country } from "./countries";
 import { liveGet, type LiveSnapshot, type Provenance } from "./live/types";
@@ -104,7 +107,8 @@ export function provenanceFor(country: Country, ind: IndicatorMeta, live?: LiveS
   return { source: "Sample data", asOf: "" };
 }
 
-/** A stable illustrative time-series ending at the current (live-or-sample) value. */
+/** SAMPLE ONLY: a stable illustrative time-series ending at the current value. Used where
+ *  no real history exists; callers must label it as sample data. */
 export function series(country: Country, ind: IndicatorMeta, points: number, live?: LiveSnapshot | null): number[] {
   const end = currentValue(country, ind, live);
   const [min, max] = ind.range;
@@ -127,9 +131,10 @@ export function fmt(v: number, ind: IndicatorMeta): string {
   return `${n}${ind.unit === "%" ? "%" : " " + ind.unit}`;
 }
 
+/** Trend windows: `years` trims real history; `points` sizes the sample fallback. */
 export const TIMEFRAMES = [
-  { label: "1Y", points: 12 }, { label: "3Y", points: 18 }, { label: "5Y", points: 24 },
-  { label: "10Y", points: 40 }, { label: "Max", points: 60 },
+  { label: "5Y", years: 5, points: 20 }, { label: "10Y", years: 10, points: 30 },
+  { label: "20Y", years: 20, points: 40 }, { label: "Max", years: Infinity, points: 60 },
 ];
 
 export const ALL_COUNTRIES = COUNTRIES;

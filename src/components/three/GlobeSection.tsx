@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
-import { Area, AreaChart, ResponsiveContainer, Tooltip, YAxis } from "recharts";
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { X, TrendingUp, TrendingDown, Info, Play, Pause, History, ArrowRight } from "lucide-react";
 import { COUNTRIES, type Country } from "@/lib/countries";
 import type { GlobeValues } from "./Globe";
@@ -13,6 +13,8 @@ import { FOCUS_EVENT } from "@/lib/focus";
 import { INDICATORS, FAMILIES, currentValue, series, colorForIndicator, fmt, provenanceFor, usesLive } from "@/lib/indicators";
 import { liveGet } from "@/lib/live/types";
 import { useLive } from "@/components/live/LiveDataProvider";
+import { useHistory, realSeries } from "@/components/live/useHistory";
+import { lastYears } from "@/lib/history";
 
 const Globe = dynamic(() => import("./Globe"), {
   ssr: false,
@@ -110,10 +112,29 @@ export default function GlobeSection({ timeline = [] }: { timeline?: TimelineMon
     [family],
   );
 
-  const chart = useMemo(() => {
-    if (!selected) return [];
-    return series(selected, ind, 24, live).map((v, i) => ({ i, v }));
-  }, [selected, ind, live]);
+  // Trend: REAL history (last 25 years annual / 10 years monthly) when a source covers this
+  // economy; otherwise a clearly-labelled sample trend. Nothing is drawn while loading.
+  const hist = useHistory(ind.key);
+  const trend = useMemo(() => {
+    if (!selected) return { mode: "none" as const, data: [] as { p: string; v: number }[], caption: "" };
+    const real = realSeries(hist, selected.code);
+    if (real) {
+      const pts = lastYears(real, hist.data?.freq === "M" ? 10 : 25);
+      const id = hist.data?.seriesIds[selected.code];
+      return {
+        mode: "real" as const,
+        data: pts.map(([p, v]) => ({ p, v })),
+        caption: `${ind.label} · ${hist.data?.provider}${id ? ` ${id}` : ""} · ${hist.data?.freq === "M" ? "monthly avg" : "annual"} ${pts[0][0]}–${pts[pts.length - 1][0]}`,
+      };
+    }
+    if (hist.status === "loading") return { mode: "loading" as const, data: [], caption: `${ind.label} · loading history…` };
+    const why = hist.status === "none" || hist.data?.origin === "none" ? "no free historical source" : `no ${hist.data?.provider ?? "sourced"} history for ${selected.name}`;
+    return {
+      mode: "sample" as const,
+      data: series(selected, ind, 24, live).map((v, i) => ({ p: `T-${24 - i}`, v })),
+      caption: `${ind.label} · illustrative trend · SAMPLE DATA (${why})`,
+    };
+  }, [selected, ind, live, hist]);
   // Prefer a live daily index move for the header change when we have one.
   const liveChange = selected ? liveGet(live, selected.code, "change") : undefined;
   const change = liveChange?.value ?? selected?.data.change ?? 0;
@@ -182,31 +203,44 @@ export default function GlobeSection({ timeline = [] }: { timeline?: TimelineMon
                   </span>
                 </div>
 
-                <div className="mt-3 h-24">
+                <div className={`mt-3 h-24 ${trend.mode === "sample" ? "opacity-60" : ""}`}>
+                  {trend.mode === "loading" ? (
+                    <div className="h-full w-full animate-pulse rounded-lg bg-white/[0.03]" aria-hidden />
+                  ) : (
                   <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={chart}>
+                    <AreaChart data={trend.data}>
                       <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="0%" stopColor={colorForIndicator(ind, currentValue(selected, ind, live))} stopOpacity={0.5} />
                         <stop offset="100%" stopColor={colorForIndicator(ind, currentValue(selected, ind, live))} stopOpacity={0} />
                       </linearGradient></defs>
                       <YAxis hide domain={["dataMin", "dataMax"]} />
-                      <Tooltip contentStyle={{ background: "#08111F", border: "1px solid rgba(133,152,180,0.2)", borderRadius: 8, fontSize: 11 }} labelStyle={{ display: "none" }} formatter={(v: number) => [fmt(v, ind), ind.label]} />
-                      <Area type="monotone" dataKey="v" stroke={colorForIndicator(ind, currentValue(selected, ind, live))} strokeWidth={1.5} fill="url(#g)" />
+                      <XAxis dataKey="p" hide />
+                      <Tooltip contentStyle={{ background: "#08111F", border: "1px solid rgba(133,152,180,0.2)", borderRadius: 8, fontSize: 11 }}
+                        labelStyle={trend.mode === "real" ? { color: "#8598B4" } : { display: "none" }}
+                        formatter={(v: number) => [fmt(v, ind), trend.mode === "sample" ? `${ind.label} (sample)` : ind.label]} />
+                      <Area type="monotone" dataKey="v" stroke={colorForIndicator(ind, currentValue(selected, ind, live))} strokeWidth={1.5} fill="url(#g)"
+                        strokeDasharray={trend.mode === "sample" ? "4 3" : undefined} isAnimationActive={false} />
                     </AreaChart>
                   </ResponsiveContainer>
+                  )}
                 </div>
-                <p className="mt-1 font-mono text-[10px] text-muted2">{ind.label} · illustrative trend</p>
+                <p className={`mt-1 font-mono text-[10px] ${trend.mode === "sample" ? "text-gold/90" : "text-muted2"}`}>
+                  {trend.mode === "real" && <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full bg-emerald align-middle" />}
+                  {trend.caption}{trend.mode === "real" && hist.data?.origin === "bundled" ? " · saved copy" : ""}
+                </p>
 
                 <div className="mt-4 grid grid-cols-2 gap-2.5">
                   {PANEL_KEYS.map((k) => {
                     const mi = INDICATORS.find((x) => x.key === k)!;
                     const v = currentValue(selected, mi, live);
                     const isLive = usesLive(selected, mi, live);
+                    const isSample = provenanceFor(selected, mi, live).source === "Sample data";
                     return (
                       <div key={k} className="rounded-xl border border-white/8 bg-white/[0.02] p-3">
                         <div className="flex items-center gap-1">
                           <span className="font-display text-base" style={{ color: colorForIndicator(mi, v) }}>{fmt(v, mi)}</span>
                           {isLive && <span className="h-1.5 w-1.5 rounded-full bg-emerald" title="Live data" />}
+                          {isSample && <span className="ml-auto font-mono text-[8px] uppercase tracking-wide text-gold/80" title="Sample data — not a real figure">sample</span>}
                         </div>
                         <div className="mt-0.5 font-mono text-[9px] uppercase tracking-wide text-muted2">{mi.label}</div>
                       </div>
@@ -225,11 +259,11 @@ export default function GlobeSection({ timeline = [] }: { timeline?: TimelineMon
                     const liveInds = keyInds.filter((mi) => usesLive(selected, mi, live));
                     if (liveInds.length > 0) {
                       const asOf = liveInds.map((mi) => provenanceFor(selected, mi, live).asOf).filter(Boolean).sort().pop();
-                      return `● Live where available (World Bank / FRED / ECB / Finnhub${asOf ? `, latest ${asOf}` : ""}). Growth/inflation/rate use our October 2026 report when it's fresher; other metrics illustrative until sourced.`;
+                      return `● Live where available (World Bank / FRED / ECB / Finnhub${asOf ? `, latest ${asOf}` : ""}). Growth/inflation/rate use our October 2026 report when it's fresher; tiles marked “sample” are placeholders.`;
                     }
                     return selected.sourced
-                      ? "Growth/inflation/rate grounded in our October 2026 report; other metrics & charts illustrative."
-                      : "Illustrative sample data for the visualisation.";
+                      ? "Growth/inflation/rate grounded in our October 2026 report; tiles marked “sample” are placeholders."
+                      : "Tiles marked “sample” are placeholders for the visualisation.";
                   })()}
                 </p>
               </motion.div>
