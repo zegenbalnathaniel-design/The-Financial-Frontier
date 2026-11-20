@@ -54,7 +54,7 @@ export default function HomePage() {
 
       <section className="shell py-20">
         <Reveal>
-          <p className="kicker">Signature experience · 01</p>
+          <p className="kicker">Signature experience</p>
           <h2 className="h-display mt-4 text-3xl sm:text-4xl">The Global Intelligence Globe</h2>
           <p className="mt-3 max-w-2xl text-muted">
             Every glowing node is a financial hub. Recolour the planet by growth, inflation, rates or

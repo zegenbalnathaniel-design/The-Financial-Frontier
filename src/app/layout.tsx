@@ -15,7 +15,7 @@ const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", weigh
 export const metadata: Metadata = {
   title: "The Financial Frontier — Financial Intelligence, Reimagined",
   description:
-    "A premium financial-intelligence platform: an interactive 3D globe, a live economic network, a macro dashboard, and a deep report every month.",
+    "A premium financial-intelligence platform: an interactive 3D globe, live markets, a macro dashboard, and a deep report every month.",
 };
 
 // The layout is fully static: live data is fetched client-side by LiveDataProvider

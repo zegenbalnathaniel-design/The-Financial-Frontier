@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, FileText, Boxes, LineChart, LayoutDashboard, GraduationCap } from "lucide-react";
+import { ArrowUpRight, FileText, CandlestickChart, LineChart, LayoutDashboard, GraduationCap } from "lucide-react";
 import Sparkline from "@/components/Sparkline";
 import TiltCard from "@/components/TiltCard";
 import { getLatestReport } from "@/lib/reports";
@@ -44,20 +44,17 @@ export default function BentoNav() {
       </TiltCard>
 
       <TiltCard>
-        <Link href="/network" className={card + " hover:border-violet/25"}>
+        <Link href="/#markets" className={card + " hover:border-violet/25"}>
           <div className="flex items-center justify-between">
-            <span className="chip"><Boxes size={12} /> Network</span>
+            <span className="chip"><CandlestickChart size={12} /> Market Pulse</span>
             <ArrowUpRight size={16} className="text-muted2 transition-colors group-hover:text-violet" />
           </div>
-          <p className="mt-4 text-sm text-muted">The economy as a living 3D graph.</p>
-          <svg viewBox="0 0 200 60" className="mt-4 w-full">
-            {[[30,30],[80,15],[120,45],[170,25],[100,50],[55,48]].map((p, i) => (
-              <circle key={i} cx={p[0]} cy={p[1]} r={i % 2 ? 4 : 6} fill={["#7C3AED","#00D084","#22D3EE"][i % 3]} opacity={0.9} />
+          <p className="mt-4 text-sm text-muted">Today&apos;s major US stocks and the top riser, live.</p>
+          <div className="mt-4 grid grid-cols-6 gap-1" aria-hidden>
+            {[0.9, -0.4, 1.6, 0.3, -1.2, 2.1, -0.2, 0.7, 1.1, -0.8, 0.4, -1.6].map((v, i) => (
+              <span key={i} className="h-4 rounded-sm" style={{ background: v >= 0 ? "#00D084" : "#F65B5B", opacity: 0.25 + Math.min(Math.abs(v) / 2.2, 1) * 0.6 }} />
             ))}
-            {[[30,30,80,15],[80,15,120,45],[120,45,170,25],[80,15,100,50],[30,30,55,48]].map((l, i) => (
-              <line key={i} x1={l[0]} y1={l[1]} x2={l[2]} y2={l[3]} stroke="#3B82F6" strokeOpacity="0.25" />
-            ))}
-          </svg>
+          </div>
         </Link>
       </TiltCard>
 

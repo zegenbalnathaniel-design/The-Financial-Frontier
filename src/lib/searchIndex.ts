@@ -13,7 +13,6 @@ const PAGES: SearchItem[] = [
   { kind: "Page", label: "Intelligence Globe & Time Machine", href: "/#globe", keywords: "map world timeline" },
   { kind: "Page", label: "All reports", href: "/reports", keywords: "archive issues" },
   { kind: "Page", label: "Dashboard", href: "/dashboard" },
-  { kind: "Page", label: "Economic network", href: "/network" },
   { kind: "Page", label: "Indicator Explorer", href: "/data", keywords: "data table chart compare" },
   { kind: "Page", label: "Glossary", href: "/learn", keywords: "learn terms definitions" },
   { kind: "Page", label: "About", href: "/about" },

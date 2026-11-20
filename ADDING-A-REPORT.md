@@ -16,6 +16,18 @@ cp content/reports/2026-06.json content/reports/2026-07.json
 npm run dev
 ```
 
+## No PDF? Generate one
+
+```bash
+npm run pdfs              # builds a PDF for every report that doesn't have one yet
+npm run pdfs -- 2026-11   # (re)build one issue
+```
+
+This prints an A4 PDF in the Issue 01 style (cover, the month in numbers, stories, charts,
+policy scorecard, month-end snapshot, sources) from the report JSON with Google Chrome, saves it
+as `public/reports/the-financial-frontier-issue-NN-screen.pdf`, and fills in `pdf` and
+`pageCount` for you. It only uses what's in the JSON, so finish the JSON first.
+
 ## Naming rules
 
 | Thing | Rule | Example |

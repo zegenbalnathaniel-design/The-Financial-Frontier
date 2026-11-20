@@ -9,7 +9,6 @@ import { OPEN_PALETTE_EVENT } from "@/components/CommandPalette";
 const links = [
   { href: "/reports", label: "Reports" },
   { href: "/dashboard", label: "Dashboard" },
-  { href: "/network", label: "Network" },
   { href: "/data", label: "Explore" },
   { href: "/learn", label: "Learn" },
   { href: "/about", label: "About" },

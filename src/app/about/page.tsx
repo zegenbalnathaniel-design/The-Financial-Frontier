@@ -21,7 +21,7 @@ export default function AboutPage() {
       <Reveal delay={0.08}>
         <div className="mt-10 max-w-3xl space-y-5 text-lg leading-relaxed text-body">
           <p>Most economics coverage either assumes you already speak the language, or flattens a complex world into a headline that tells you nothing. The Financial Frontier is built on the belief that there's a third option — depth you can actually see and explore.</p>
-          <p>We pair institutional-grade data with an immersive interface: an interactive globe, a live economic network, and a deep, fully-sourced report every month. No jargon left undefined. No statistic without a source.</p>
+          <p>We pair institutional-grade data with an immersive interface: an interactive globe, a live market board, and a deep, fully-sourced report every month. No jargon left undefined. No statistic without a source.</p>
           <p className="text-muted">Whether this is your first economics read or your five-hundredth, the promise is the same: you'll leave understanding the world a little better than when you arrived.</p>
         </div>
       </Reveal>

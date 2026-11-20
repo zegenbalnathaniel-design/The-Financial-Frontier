@@ -1,4 +1,4 @@
-// Country dataset powering the 3D globe and the economic network.
+// Country dataset powering the 3D globe.
 //
 // IMPORTANT — DATA HONESTY: values here are the FALLBACK dataset — illustrative sample
 // data seeded with our latest report figures (Oct 2026 issue, plus the BoE's 4 Nov hike). At
@@ -102,7 +102,7 @@ export const GROUPS = [
   "MERCOSUR", "APEC", "SAARC", "AfricanUnion", "Developed", "Emerging", "Frontier",
 ];
 
-// The dataset modes the globe/network can colour by.
+// The dataset modes the globe can colour by.
 export type DataMode = "growth" | "inflation" | "rate" | "change";
 export const DATA_MODES: { key: DataMode; label: string; unit: string; hint: string }[] = [
   { key: "growth", label: "Economic growth", unit: "%", hint: "2026 GDP growth forecast" },

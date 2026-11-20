@@ -2,8 +2,8 @@
 
 > Financial intelligence, reimagined in three dimensions.
 
-A premium financial-intelligence platform: an interactive **3D globe**, a live **3D economic network**,
-a **navigator cube**, a macro **dashboard**, a large **glossary**, and a deep, fully-sourced **report
+A premium financial-intelligence platform: an interactive **3D globe**, a live **market board**,
+a module navigator, a macro **dashboard**, a large **glossary**, and a deep, fully-sourced **report
 every month**.
 
 Built with **Next.js 14 (App Router)**, **TypeScript**, **Tailwind CSS**, **Three.js /
@@ -25,25 +25,24 @@ npm start            # serve the production build
 Google Fonts, so it needs network once. While developing, use `npm run dev` — it picks up content
 changes instantly (no rebuild needed).
 
-## The three signature 3D experiences
+## The signature experiences
 
-All three are **real WebGL**, built with React-Three-Fiber — not Spline embeds. They're your code.
+The globes are **real WebGL**, built with React-Three-Fiber — not Spline embeds. They're your code.
 Each is client-only (`dynamic(..., { ssr: false })`) with a loading state, so the server build stays clean.
 
 | Experience | Where | File |
 |---|---|---|
 | **Intelligence Globe** — rotate/drag/zoom, recolour by growth/inflation/rates/markets, click a hub | home hero | `src/components/three/Globe.tsx` + `GlobeSection.tsx` |
-| **Economic Network** — nodes = economies, edges = shared blocs, filter by region/group/mode | `/network` | `src/components/three/NetworkGraph.tsx` + `NetworkSection.tsx` |
 | **Indicator Explorer** — SingStat-style table builder: pick indicator + economies + view (line/bar/table/rankings) | `/data` | `src/components/IndicatorExplorer.tsx` |
 
 ### Want Spline instead?
-Install `@splinetool/react-spline`, then replace the `<Globe />` / `<NetworkGraph />` render with
+Install `@splinetool/react-spline`, then replace the `<Globe />` render with
 `<Spline scene="...scene.splinecode" />`. The panels, filters and data around it stay the same.
 
 ## Data honesty (please read)
 
 - **Reports** and **dashboard** use real, attributed figures (see each report's Sources panel).
-- The **3D globe and network** run on **illustrative sample data** in `src/lib/countries.ts`, seeded
+- The **3D globe** runs on **illustrative sample data** in `src/lib/countries.ts`, seeded
   with our June 2026 numbers where we have them (`sourced: true`). The UI labels these as sample data.
   We never present invented numbers as real.
 - To make the 3D scenes authoritative, wire a live source (IMF/World Bank/FRED/ECB) into
@@ -78,9 +77,9 @@ automatically, so a stray copy can't break the build.
 content/reports/   One JSON file per month — your content.
 public/reports/    The PDFs.
 src/
-  app/             Home, reports, reports/[slug], dashboard, network, learn, about, contact
+  app/             Home, reports, reports/[slug], dashboard, data, learn, about, contact
   components/
-    three/         Globe, NetworkGraph, Cube + section wrappers
+    three/         Globe, HeroGlobe + section wrapper
     charts/        Recharts bars + policy panel
     Nav, Footer, Ticker, ReportCard, StatCard, Reveal, Particles, PdfViewer, ContactForm,
     BentoNav (home module grid), IndicatorExplorer, IndicatorStrip, Sparkline
@@ -121,7 +120,7 @@ deterministically generated so it's stable, and seeded with the June figures for
 Wire a real time-series API in that file to make it authoritative.
 
 > The old navigator cube was replaced by a **bento-grid module navigator** (`BentoNav.tsx`) with live
-> mini-visuals — sparklines, a mini network, and the latest issue — which is cleaner and more useful.
+> mini-visuals — sparklines, a mini market heatmap, and the latest issue — which is cleaner and more useful.
 
 ## Recent upgrades
 

@@ -28,11 +28,11 @@ export default function Hero({ issue, month, slug, economies, terms }:
         </h1>
         <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted">
           Explore the world economy as a living system — an interactive globe with real borders, a
-          real-time economic network, and a deep, fully-sourced report every month.
+          live market board, and a deep, fully-sourced report every month.
         </p>
         <div className="mt-10 flex flex-wrap gap-3">
           {slug && <Link href={`/reports/${slug}`} className="btn-primary">Read {month} <ArrowRight size={16} /></Link>}
-          <Link href="/network" className="btn-ghost"><Boxes size={16} /> Explore the network</Link>
+          <Link href="/#globe" className="btn-ghost"><Globe2 size={16} /> Explore the globe</Link>
         </div>
         <div className="mt-12 flex flex-wrap gap-x-10 gap-y-4">
           {[{ Icon: Globe2, n: `${economies}`, l: "economies mapped" },

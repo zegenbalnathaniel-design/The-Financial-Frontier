@@ -6,7 +6,7 @@ import { getReportSlugs } from "@/lib/reports";
 const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://the-financial-frontier.vercel.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ["", "/reports", "/dashboard", "/network", "/data", "/learn", "/about", "/contact"].map((p) => ({
+  const routes = ["", "/reports", "/dashboard", "/data", "/learn", "/about", "/contact"].map((p) => ({
     url: `${base}${p}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
