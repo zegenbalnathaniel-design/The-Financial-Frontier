@@ -9,7 +9,7 @@ import { liveKey } from "./types";
 import { wbFetchIndicator } from "./worldbank";
 import { fetchFxYtd } from "./frankfurter";
 import { fetchFred } from "./fred";
-import { fetchIndexMoves } from "./finnhub";
+import { getWorldMoves } from "./worldMarkets";
 
 // Our indicator key → World Bank series id (+ optional scale to the indicator's unit).
 // These are all annual; a daily refresh catches new releases.
@@ -72,15 +72,15 @@ export async function getLiveSnapshot(): Promise<LiveSnapshot> {
     /* FRED unavailable — skip */
   }
 
-  // --- Finnhub (daily index move → `change`) -----------------------------------
+  // --- World markets (daily move → `change`) -----------------------------------
+  // Country ETFs via Finnhub, with Alpha Vantage as a daily-cached backup.
   try {
-    const moves = await fetchIndexMoves((process.env.FINNHUB_API_KEY ?? process.env.FIN_HUB_API_KEY));
-    for (const [k, q] of moves) {
-      values[k] = { value: q.changePct, source: "Finnhub", asOf: q.asOf };
-      sources.add("Finnhub");
+    for (const m of await getWorldMoves()) {
+      values[liveKey(m.country, "change")] = { value: m.changePct, source: `${m.source} (via ${m.etf})`, asOf: m.asOf };
+      sources.add(m.source);
     }
   } catch {
-    /* Finnhub unavailable — skip */
+    /* market feeds unavailable — skip */
   }
 
   return { values, sources: Array.from(sources), generatedAt: new Date().toISOString() };

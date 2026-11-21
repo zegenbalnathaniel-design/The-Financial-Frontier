@@ -11,7 +11,7 @@ import type { MarketBoard } from "@/lib/live/markets";
 // Everything renders immediately with curated/sample values and upgrades in place.
 
 const EMPTY_BOARD: MarketBoard = {
-  stocks: [], indices: [], topGainer: null, topLoser: null, breadth: { up: 0, down: 0 },
+  stocks: [], indices: [], world: [], topGainer: null, topLoser: null, breadth: { up: 0, down: 0 },
   asOf: null, marketOpen: null, source: null,
 };
 

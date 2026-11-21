@@ -57,6 +57,10 @@ Install `@splinetool/react-spline`, then replace the `<Globe />` render with
 | **Time Machine** — scrub Jun → Now to recolour the globe with each issue's month-end figures | under the globe · `GlobeSection.tsx` | `countrySnapshot` in each report JSON |
 | **⌘K palette** — search countries, stocks, reports, indicators, glossary; countries fly the globe | everywhere · `src/components/CommandPalette.tsx` | static `/api/search` |
 
+**World markets.** Market Pulse also shows a *World markets today* row and the globe's "Markets today"
+view goes live: each economy is tracked through its US-listed country ETF (EWJ, EWG, INDA …) via Finnhub,
+with Alpha Vantage (`ALPHA_API_KEY`) as a daily-cached backup — see `src/lib/live/worldMarkets.ts`.
+
 **Set `FINNHUB_API_KEY` in Vercel** (free key at finnhub.io) or the market board and news show an honest
 "feed offline" state — the site never invents prices. Stocks are listed in `src/lib/live/stockList.ts`.
 

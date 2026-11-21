@@ -2,9 +2,10 @@
 
 import { useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Activity, ArrowDownRight, ArrowUpRight, Crown, Radio, WifiOff } from "lucide-react";
+import { Activity, ArrowDownRight, ArrowUpRight, Crown, Globe2, Radio, WifiOff } from "lucide-react";
 import { useMarkets } from "@/components/live/LiveDataProvider";
 import type { StockQuote } from "@/lib/live/markets";
+import type { WorldMove } from "@/lib/live/worldMarkets";
 
 // ── Squarified treemap (Bruls et al.) — tiles sized by market cap, no extra deps ──
 interface Rect { x: number; y: number; w: number; h: number }
@@ -93,6 +94,35 @@ function Spotlight({ s, kind }: { s: StockQuote; kind: "gainer" | "loser" }) {
         <p className={`font-display text-4xl font-bold tracking-tight ${up ? "text-pos" : "text-neg"}`}>{sign(s.changePct)}{s.changePct.toFixed(2)}%</p>
       </div>
       <DayRange s={s} />
+    </div>
+  );
+}
+
+/** "Other stock markets" — each economy's US-listed country ETF, sorted by today's move. */
+function WorldMarkets({ world }: { world: WorldMove[] }) {
+  if (world.length === 0) return null;
+  const rows = [...world].filter((w) => w.country !== "US").sort((a, b) => b.changePct - a.changePct);
+  const best = rows[0], worst = rows[rows.length - 1];
+  const sources = Array.from(new Set(world.map((w) => w.source))).join(" + ");
+  return (
+    <div className="glass-liquid relative mt-4 overflow-hidden p-5">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="inline-flex items-center gap-2 font-display text-sm font-semibold text-ink"><Globe2 size={15} className="text-cyan" /> World markets today</p>
+        <p className="font-mono text-[10px] text-muted2">
+          {best && <>best <span className="text-pos">{best.market} {sign(best.changePct)}{best.changePct.toFixed(2)}%</span> · </>}
+          {worst && <>worst <span className="text-neg">{worst.market} {sign(worst.changePct)}{worst.changePct.toFixed(2)}%</span></>}
+        </p>
+      </div>
+      <div className="mt-3 grid grid-cols-2 gap-1.5 sm:grid-cols-4 lg:grid-cols-6">
+        {rows.map((w) => (
+          <div key={w.country} title={`${w.market} via ${w.etf} · ${w.source} · ${w.asOf}`}
+            className="flex items-center justify-between rounded-lg border border-white/[0.06] px-2.5 py-1.5" style={{ background: heat(w.changePct) }}>
+            <span className="truncate text-[11px] text-ink">{w.market} <span className="font-mono text-[9px] text-muted2">{w.etf}</span></span>
+            <span className={`font-mono text-[11px] font-semibold ${w.changePct >= 0 ? "text-emerald" : "text-[#ff9a9a]"}`}>{sign(w.changePct)}{w.changePct.toFixed(2)}%</span>
+          </div>
+        ))}
+      </div>
+      <p className="mt-2 font-mono text-[9px] text-muted2">Each market tracked through its US-listed country ETF, so moves are in dollar terms and reflect the latest New York session · {sources}.</p>
     </div>
   );
 }
@@ -213,6 +243,7 @@ export default function MarketPulse() {
           {board.topLoser && <Spotlight s={board.topLoser} kind="loser" />}
         </div>
       </div>
+      <WorldMarkets world={board.world ?? []} />
       <p className="mt-3 font-mono text-[10px] text-muted2">Tile size ≈ market cap (square-root scaled so smaller names stay readable) · colour = today&rsquo;s % move, saturating at ±3% · {board.stocks.length || 28} major US stocks · Not investment advice.</p>
     </div>
   );

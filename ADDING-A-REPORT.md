@@ -16,17 +16,27 @@ cp content/reports/2026-06.json content/reports/2026-07.json
 npm run dev
 ```
 
-## No PDF? Generate one
+## The PDF edition
 
 ```bash
 npm run pdfs              # builds a PDF for every report that doesn't have one yet
 npm run pdfs -- 2026-11   # (re)build one issue
 ```
 
-This prints an A4 PDF in the Issue 01 style (cover, the month in numbers, stories, charts,
-policy scorecard, month-end snapshot, sources) from the report JSON with Google Chrome, saves it
-as `public/reports/the-financial-frontier-issue-NN-screen.pdf`, and fills in `pdf` and
-`pageCount` for you. It only uses what's in the JSON, so finish the JSON first.
+**Full edition (Issue 01 format, ~37 pages).** Write `content/issues/YYYY-MM.mjs` — copy
+`content/issues/2026-10.mjs` and replace the content. Each page is a list of blocks (`lead`, `p`,
+`fiveq`, `chart`, `stats`, `sidebar`, `table`, `cards`, …) rendered by `scripts/pdf/render.mjs` in
+the house style: cover, contents, editor's letter, global economy, US, the Fed and a central-bank
+scorecard, every region, every market, AI, trade, dashboard, company and country spotlights,
+charts, infographic, explainer, vocabulary, lighter side, history/ahead, sources, back cover. The
+build checks every page in Chrome and **refuses to publish if any page's text overflows** — shorten
+that page and rerun. Only use figures you can source; list them on the Sources page.
+
+**Short edition.** With no `content/issues/` file, the script prints a 7-page edition from the
+report JSON alone.
+
+Either way the PDF lands in `public/reports/the-financial-frontier-issue-NN-screen.pdf` and the
+script fills in `pdf` and `pageCount` in the report JSON.
 
 ## Naming rules
 

@@ -24,7 +24,7 @@ export interface Country {
     inflation: number;  // headline inflation %
     rate: number;       // policy rate %
     market: string;     // headline equity index label
-    change: number;     // illustrative daily change %
+    change: number;     // daily market move % (sample; replaced live via country ETFs)
     currency: string;
   };
   sourced?: boolean;    // true where the figure is grounded in our monthly reports
@@ -108,7 +108,7 @@ export const DATA_MODES: { key: DataMode; label: string; unit: string; hint: str
   { key: "growth", label: "Economic growth", unit: "%", hint: "2026 GDP growth forecast" },
   { key: "inflation", label: "Inflation", unit: "%", hint: "Headline consumer prices" },
   { key: "rate", label: "Interest rates", unit: "%", hint: "Central-bank policy rate" },
-  { key: "change", label: "Markets today", unit: "%", hint: "Illustrative daily index change" },
+  { key: "change", label: "Markets today", unit: "%", hint: "Today's move of each market's US-listed country ETF (live where a feed key is set)" },
 ];
 
 // Colour scale per mode → returns a hex string given a value.
