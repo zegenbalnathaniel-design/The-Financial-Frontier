@@ -12,10 +12,13 @@ import { readFileSync, writeFileSync, readdirSync, existsSync, mkdtempSync, rmSy
 import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { execFileSync } from "node:child_process";
+import { pathToFileURL } from "node:url";
+import { renderIssue } from "./pdf/render.mjs";
 
 const ROOT = resolve(new URL("..", import.meta.url).pathname);
 const CONTENT = join(ROOT, "content/reports");
 const OUT = join(ROOT, "public/reports");
+const ISSUES = join(ROOT, "content/issues");
 const CHROME = process.env.CHROME_PATH ?? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
 const NAMES = {
@@ -233,22 +236,35 @@ td:first-child { font-family: Inter; }
 }
 
 // ── main ───────────────────────────────────────────────────────────────────
+// A full-length edition (content/issues/<slug>.mjs, Issue 01 format, 35+ pages) is used when
+// it exists; otherwise a short edition is generated from the report JSON alone.
 if (!existsSync(CHROME)) { console.error(`Google Chrome not found at ${CHROME}. Set CHROME_PATH.`); process.exit(1); }
 const only = process.argv[2];
 const files = readdirSync(CONTENT).filter((f) => /^\d{4}-\d{2}\.json$/.test(f)).sort();
 const tmp = mkdtempSync(join(tmpdir(), "ff-pdf-"));
-let built = 0;
+const chrome = (args) => execFileSync(CHROME, ["--headless=new", "--disable-gpu", "--no-pdf-header-footer", "--virtual-time-budget=10000", ...args], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"], maxBuffer: 64 * 1024 * 1024 });
+let built = 0, failed = false;
 for (const f of files) {
   const path = join(CONTENT, f);
   const r = JSON.parse(readFileSync(path, "utf8"));
   if (only ? r.slug !== only : r.pdf) continue;
-  const { html, pageCount } = render(r);
+  const issuePath = join(ISSUES, `${r.slug}.mjs`);
+  const full = existsSync(issuePath);
+  const { html, pageCount } = full
+    ? renderIssue((await import(pathToFileURL(issuePath).href + `?t=${Date.now()}`)).default)
+    : render(r);
   const htmlPath = join(tmp, `${r.slug}.html`);
   writeFileSync(htmlPath, html);
   if (process.env.FF_HTML_DIR) writeFileSync(join(process.env.FF_HTML_DIR, `${r.slug}.html`), html); // for previewing
+  if (full) {
+    // Refuse to publish a page whose text runs past its footer.
+    const dom = chrome(["--dump-dom", `file://${htmlPath}`]);
+    if (!/data-checked="1"/.test(dom)) { console.error(`✗ ${r.slug}: layout check did not run`); failed = true; continue; }
+    const over = /data-overflow="([^"]*)"/.exec(dom)?.[1] ?? "";
+    if (over) { console.error(`✗ ${r.slug}: content overflows on page(s) ${over}`); failed = true; if (!process.env.FF_FORCE) continue; }
+  }
   const name = `the-financial-frontier-issue-${pad(r.issueNumber)}-screen.pdf`;
-  execFileSync(CHROME, ["--headless=new", "--disable-gpu", "--no-pdf-header-footer", "--virtual-time-budget=8000",
-    `--print-to-pdf=${join(OUT, name)}`, `file://${htmlPath}`], { stdio: "ignore" });
+  chrome([`--print-to-pdf=${join(OUT, name)}`, `file://${htmlPath}`]);
   // Edit the JSON text in place (rather than re-serialising) so hand-written formatting survives.
   let text = readFileSync(path, "utf8");
   const pdfJson = `"pdf": ${JSON.stringify({ ...(r.pdf ?? {}), screen: `/reports/${name}` })}`;
@@ -256,8 +272,9 @@ for (const f of files) {
   text = /"pageCount"\s*:\s*\d+/.test(text) ? text.replace(/"pageCount"\s*:\s*\d+/, `"pageCount": ${pageCount}`) : text.replace(/\n(\s*)"tags"\s*:/, `\n$1"pageCount": ${pageCount},\n$1"tags":`);
   JSON.parse(text); // fail loudly rather than write a broken file
   writeFileSync(path, text);
-  console.log(`✓ ${r.slug} → public/reports/${name} (${pageCount} pages)`);
+  console.log(`✓ ${r.slug} → public/reports/${name} (${pageCount} pages${full ? ", full edition" : ", short edition"})`);
   built++;
 }
 rmSync(tmp, { recursive: true, force: true });
-if (!built) console.log(only ? `No report with slug ${only}.` : "Every report already has a PDF. Pass a slug to rebuild one.");
+if (!built && !failed) console.log(only ? `No report with slug ${only}.` : "Every report already has a PDF. Pass a slug to rebuild one.");
+if (failed) process.exit(1);
