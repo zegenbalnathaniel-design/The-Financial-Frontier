@@ -83,7 +83,7 @@ async function whyItMatters(headline: string, summary: string): Promise<string |
 }
 
 export async function getStoryOfDay(): Promise<StoryOfDay> {
-  const key = process.env.FINNHUB_API_KEY;
+  const key = (process.env.FINNHUB_API_KEY ?? process.env.FIN_HUB_API_KEY);
   if (key) {
     try {
       const res = await fetch(`https://finnhub.io/api/v1/news?category=general&token=${key}`, {

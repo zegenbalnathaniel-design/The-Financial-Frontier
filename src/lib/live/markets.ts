@@ -62,7 +62,7 @@ type RawQuote = { c: number; d: number | null; dp: number | null; h: number; l: 
 type RawProfile = { marketCapitalization?: number; logo?: string; name?: string };
 
 export async function getMarketBoard(): Promise<MarketBoard> {
-  const key = process.env.FINNHUB_API_KEY;
+  const key = (process.env.FINNHUB_API_KEY ?? process.env.FIN_HUB_API_KEY);
   if (!key) return EMPTY_BOARD;
   const q = (s: string) => `${BASE}/quote?symbol=${encodeURIComponent(s)}&token=${key}`;
   const p = (s: string) => `${BASE}/stock/profile2?symbol=${encodeURIComponent(s)}&token=${key}`;

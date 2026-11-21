@@ -74,7 +74,7 @@ export async function getLiveSnapshot(): Promise<LiveSnapshot> {
 
   // --- Finnhub (daily index move → `change`) -----------------------------------
   try {
-    const moves = await fetchIndexMoves(process.env.FINNHUB_API_KEY);
+    const moves = await fetchIndexMoves((process.env.FINNHUB_API_KEY ?? process.env.FIN_HUB_API_KEY));
     for (const [k, q] of moves) {
       values[k] = { value: q.changePct, source: "Finnhub", asOf: q.asOf };
       sources.add("Finnhub");
