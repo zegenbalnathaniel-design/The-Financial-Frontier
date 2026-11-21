@@ -36,3 +36,38 @@ export async function wbFetchIndicator(
   }
   return out;
 }
+
+/**
+ * Full annual history of one indicator for many countries, oldest → newest.
+ *
+ * Deliberately NO `date=` / `mrv=` filter: World Bank answers the unfiltered query from
+ * its cache in a few seconds, while date-ranged multi-country queries routinely stall
+ * for 30s+. One call returns every year since 1960 (~2,000 rows for 30 economies).
+ * Kept free of imports so scripts/build-history-seed.mts can load this file directly.
+ */
+export async function wbFetchHistory(
+  codes: string[],
+  wbCode: string,
+  opts: { revalidate?: number; timeoutMs?: number; tags?: string[] } = {},
+): Promise<Map<string, Array<[string, number]>>> {
+  const out = new Map<string, Array<[string, number]>>();
+  if (codes.length === 0) return out;
+  const url = `${BASE}/country/${codes.join(";")}/indicator/${wbCode}?format=json&per_page=${codes.length * 80}`;
+  const res = await fetch(url, {
+    next: { revalidate: opts.revalidate ?? DAY, tags: opts.tags },
+    signal: AbortSignal.timeout(opts.timeoutMs ?? 25000),
+  } as RequestInit);
+  if (!res.ok) throw new Error(`World Bank ${wbCode}: HTTP ${res.status}`);
+  const json = (await res.json()) as [{ pages?: number } | { message?: unknown }, Array<{ country?: { id?: string }; date?: string; value?: number | null }> | null];
+  const rows = Array.isArray(json?.[1]) ? json[1] : null;
+  if (!rows) throw new Error(`World Bank ${wbCode}: no data rows`);
+  for (const row of rows) {
+    const code = row.country?.id;
+    if (!code || row.value == null || !row.date || !Number.isFinite(row.value)) continue;
+    const arr = out.get(code) ?? [];
+    arr.push([row.date, row.value]);
+    out.set(code, arr);
+  }
+  for (const arr of out.values()) arr.sort((a, b) => Number(a[0]) - Number(b[0]));
+  return out;
+}

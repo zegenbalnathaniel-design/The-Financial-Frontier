@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "pdfs": "node scripts/build-report-pdfs.mjs"
+    "pdfs": "node scripts/build-report-pdfs.mjs",
+    "history-seed": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/build-history-seed.mts"
   },
   "dependencies": {
     "@react-three/drei": "^9.109.2",

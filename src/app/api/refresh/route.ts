@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { HISTORY_KEYS, HISTORY_TAG } from "@/lib/history";
 
 // Hit daily by Vercel Cron (see vercel.json) to refresh the live data routes, so the
 // first visitor of the day gets warm, current data instead of paying for a cold fetch.
@@ -15,5 +16,7 @@ export async function GET(req: Request) {
     }
   }
   for (const p of ["/api/snapshot", "/api/markets", "/api/story"]) revalidatePath(p);
+  revalidateTag(HISTORY_TAG); // upstream World Bank / FRED history responses
+  for (const k of HISTORY_KEYS) revalidatePath(`/api/history/${k}`);
   return NextResponse.json({ ok: true, revalidatedAt: new Date().toISOString() });
 }

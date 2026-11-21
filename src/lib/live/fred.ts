@@ -57,3 +57,40 @@ export async function fetchFred(apiKey: string | undefined, revalidate = DAY): P
   );
   return out;
 }
+
+/**
+ * Monthly history (monthly averages; daily series like DFF/ECBDFR are averaged by FRED)
+ * for every configured series of one indicator. Missing key → empty map. Each series has
+ * its own timeout and failure isolation. Returns country → { id, points oldest → newest }.
+ */
+export async function fetchFredHistory(
+  apiKey: string | undefined,
+  indicatorKey: string,
+  opts: { revalidate?: number; timeoutMs?: number; tags?: string[]; start?: string } = {},
+): Promise<Map<string, { id: string; points: Array<[string, number]> }>> {
+  const out = new Map<string, { id: string; points: Array<[string, number]> }>();
+  if (!apiKey) return out;
+  await Promise.all(
+    FRED_SERIES.filter((s) => s.key === indicatorKey).map(async ({ series, country }) => {
+      try {
+        const url = `${BASE}?series_id=${series}&api_key=${apiKey}&file_type=json&frequency=m&aggregation_method=avg&observation_start=${opts.start ?? "1990-01-01"}`;
+        const res = await fetch(url, {
+          next: { revalidate: opts.revalidate ?? DAY, tags: opts.tags },
+          signal: AbortSignal.timeout(opts.timeoutMs ?? 10000),
+        });
+        if (!res.ok) return;
+        const json = (await res.json()) as { observations?: Array<{ date: string; value: string }> };
+        const points: Array<[string, number]> = [];
+        for (const o of json.observations ?? []) {
+          const v = Number(o.value);
+          if (o.value === "." || !Number.isFinite(v)) continue;
+          points.push([o.date.slice(0, 7), v]); // "2026-10-01" → "2026-10"
+        }
+        if (points.length) out.set(country, { id: series, points });
+      } catch {
+        /* one series failing must not sink the rest */
+      }
+    }),
+  );
+  return out;
+}
