@@ -14,7 +14,7 @@ import { INDICATORS, FAMILIES, currentValue, series, colorForIndicator, fmt, pro
 import { liveGet } from "@/lib/live/types";
 import { useLive } from "@/components/live/LiveDataProvider";
 import { useHistory, realSeries } from "@/components/live/useHistory";
-import { lastYears } from "@/lib/history";
+import { lastYears, FREQ_LABEL } from "@/lib/history";
 
 const Globe = dynamic(() => import("./Globe"), {
   ssr: false,
@@ -112,19 +112,20 @@ export default function GlobeSection({ timeline = [] }: { timeline?: TimelineMon
     [family],
   );
 
-  // Trend: REAL history (last 25 years annual / 10 years monthly) when a source covers this
+  // Trend: REAL history (last 25 years annual / 10 years monthly or quarterly) when a source covers this
   // economy; otherwise a clearly-labelled sample trend. Nothing is drawn while loading.
   const hist = useHistory(ind.key);
   const trend = useMemo(() => {
     if (!selected) return { mode: "none" as const, data: [] as { p: string; v: number }[], caption: "" };
     const real = realSeries(hist, selected.code);
     if (real) {
-      const pts = lastYears(real, hist.data?.freq === "M" ? 10 : 25);
+      const freq = hist.data?.freqs?.[selected.code] ?? hist.data?.freq ?? "A";
+      const pts = lastYears(real, freq === "A" ? 25 : 10);
       const id = hist.data?.seriesIds[selected.code];
       return {
         mode: "real" as const,
         data: pts.map(([p, v]) => ({ p, v })),
-        caption: `${ind.label} · ${hist.data?.provider}${id ? ` ${id}` : ""} · ${hist.data?.freq === "M" ? "monthly avg" : "annual"} ${pts[0][0]}–${pts[pts.length - 1][0]}`,
+        caption: `${ind.label} · ${hist.data?.provider}${id ? ` ${id}` : ""} · ${FREQ_LABEL[freq]} ${pts[0][0]}–${pts[pts.length - 1][0]}`,
       };
     }
     if (hist.status === "loading") return { mode: "loading" as const, data: [], caption: `${ind.label} · loading history…` };

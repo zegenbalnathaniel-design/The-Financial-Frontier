@@ -2,15 +2,20 @@
 //
 // DATA HONESTY: currentValue()/series() take an optional live snapshot (src/lib/live/)
 // and return REAL sourced values wherever one exists for that country+indicator —
-// World Bank covers ~11 indicators (growth, inflation, per-capita, unemployment,
-// current account, fiscal balance, debt, broad money, FDI, trade balance, market cap);
-// FRED adds policy rates & 10y yields; ECB/Frankfurter adds FX. Everything else falls
-// back to the deterministic placeholders below (stable across renders) and is labelled
-// as sample data in the UI.
+//   World Bank: growth, per-capita GDP, CPI, unemployment, current account, fiscal
+//     balance, broad money, FDI, trade balance, market cap (annual)
+//   OECD (no key): core inflation, wage growth, industrial production, retail sales,
+//     consumer confidence, labour productivity, 10-year yields
+//   BIS (no key): central-bank policy rates, house prices · IMF WEO (no key): debt-to-GDP
+//   FRED (key): fresher daily rates/yields · ECB/Frankfurter: FX · Alpha Vantage (key):
+//     equity returns YTD via country ETFs.
+// Everything else — Manufacturing PMI (no free source) and economies a source doesn't
+// cover — falls back to the deterministic placeholders below (stable across renders) and
+// is labelled as sample data in the UI.
 //
-// Trend lines use REAL history (src/lib/history.ts → /api/history/[key]: World Bank
-// annual, FRED monthly). series() below is only the labelled sample fallback for
-// indicators/economies no source covers; it is never mixed with real points.
+// Trend lines use REAL history (src/lib/history.ts → /api/history/[key]) from the same
+// sources. series() below is only the labelled sample fallback for indicators/economies
+// no source covers; it is never mixed with real points.
 
 import { COUNTRIES, type Country } from "./countries";
 import { liveGet, type LiveSnapshot, type Provenance } from "./live/types";
@@ -37,25 +42,25 @@ export const INDICATORS: IndicatorMeta[] = [
   { key: "gdpGrowth", label: "GDP growth", family: "Economic Growth", unit: "%", decimals: 1, higherBetter: true, range: [-2, 8], field: "growth", about: "Annual change in real economic output — the broadest gauge of expansion." },
   { key: "gdpPerCapita", label: "GDP per capita", family: "Economic Growth", unit: "$", decimals: 0, higherBetter: true, range: [1500, 92000], about: "Output per person — a rough proxy for average living standards." },
   { key: "cpi", label: "CPI inflation", family: "Inflation & Prices", unit: "%", decimals: 1, higherBetter: false, range: [0, 40], field: "inflation", about: "The pace at which consumer prices rise year on year." },
-  { key: "coreInflation", label: "Core inflation", family: "Inflation & Prices", unit: "%", decimals: 1, higherBetter: false, range: [1, 12], about: "Inflation excluding volatile food and energy — the underlying trend." },
+  { key: "coreInflation", label: "Core inflation", family: "Inflation & Prices", unit: "%", decimals: 1, higherBetter: false, range: [1, 12], about: "Consumer prices excluding food and energy, year on year — the underlying trend." },
   { key: "unemployment", label: "Unemployment rate", family: "Employment & Labour", unit: "%", decimals: 1, higherBetter: false, range: [2, 16], about: "Share of the labour force without work but seeking it." },
-  { key: "wageGrowth", label: "Wage growth", family: "Employment & Labour", unit: "%", decimals: 1, higherBetter: true, range: [0, 10], about: "How fast pay is rising — supports spending, can keep inflation sticky." },
+  { key: "wageGrowth", label: "Wage growth", family: "Employment & Labour", unit: "%", decimals: 1, higherBetter: true, range: [0, 10], about: "Labour compensation per employee, year on year — supports spending, can keep inflation sticky." },
   { key: "policyRate", label: "Policy rate", family: "Monetary Policy", unit: "%", decimals: 2, range: [0, 45], field: "rate", about: "The central-bank interest rate that prices credit across the economy." },
   { key: "tenYearYield", label: "10-year bond yield", family: "Financial Markets", unit: "%", decimals: 2, range: [1, 16], about: "The government's long-term borrowing cost — a benchmark for all lending." },
-  { key: "debtToGdp", label: "Debt-to-GDP", family: "Government Finance", unit: "%", decimals: 0, higherBetter: false, range: [25, 260], about: "Government debt measured against the size of the economy." },
+  { key: "debtToGdp", label: "Debt-to-GDP", family: "Government Finance", unit: "%", decimals: 0, higherBetter: false, range: [25, 260], about: "General government gross debt measured against the size of the economy." },
   { key: "budgetBalance", label: "Budget balance", family: "Government Finance", unit: "% GDP", decimals: 1, higherBetter: true, range: [-9, 4], about: "The fiscal surplus (+) or deficit (−) as a share of GDP." },
   { key: "currentAccount", label: "Current account", family: "International Trade", unit: "% GDP", decimals: 1, higherBetter: true, range: [-7, 13], about: "The broadest trade balance — goods, services, income and transfers." },
   { key: "tradeBalance", label: "Trade balance", family: "International Trade", unit: "$bn", decimals: 0, range: [-950, 900], about: "Exports minus imports of goods and services." },
   { key: "fdiInflows", label: "FDI inflows", family: "International Trade", unit: "$bn", decimals: 0, higherBetter: true, range: [0, 360], about: "Long-term foreign investment flowing into the country." },
-  { key: "marketReturnYtd", label: "Equity return (YTD)", family: "Financial Markets", unit: "%", decimals: 1, higherBetter: true, range: [-22, 34], about: "The headline stock index's year-to-date performance." },
+  { key: "marketReturnYtd", label: "Equity return (YTD)", family: "Financial Markets", unit: "%", decimals: 1, higherBetter: true, range: [-22, 34], about: "Year-to-date total return of the market's US-listed country ETF, in US dollars." },
   { key: "marketCap", label: "Market capitalisation", family: "Financial Markets", unit: "$tn", decimals: 2, higherBetter: true, range: [0.03, 48], about: "The total value of the country's listed equities." },
   { key: "pmi", label: "Manufacturing PMI", family: "Business Activity", unit: "idx", decimals: 1, higherBetter: true, range: [44, 58], about: "Above 50 signals factory expansion; below, contraction." },
-  { key: "industrialProduction", label: "Industrial production", family: "Business Activity", unit: "% y/y", decimals: 1, range: [-8, 13], about: "Output of factories, mines and utilities." },
-  { key: "retailSales", label: "Retail sales", family: "Consumer", unit: "% y/y", decimals: 1, range: [-4, 12], about: "The value of goods sold to consumers — a direct read on demand." },
-  { key: "consumerConfidence", label: "Consumer confidence", family: "Consumer", unit: "idx", decimals: 0, higherBetter: true, range: [68, 116], about: "How optimistic households feel — often predicts future spending." },
-  { key: "housingPrice", label: "House prices", family: "Housing", unit: "% y/y", decimals: 1, range: [-10, 20], about: "The annual change in home prices — key to household wealth." },
+  { key: "industrialProduction", label: "Industrial production", family: "Business Activity", unit: "% y/y", decimals: 1, range: [-8, 13], about: "Output of factories, mines and utilities, year on year." },
+  { key: "retailSales", label: "Retail sales", family: "Consumer", unit: "% y/y", decimals: 1, range: [-4, 12], about: "The volume of goods sold by retailers, year on year — a direct read on demand." },
+  { key: "consumerConfidence", label: "Consumer confidence", family: "Consumer", unit: "idx", decimals: 0, higherBetter: true, range: [94, 104], about: "How optimistic households feel (OECD composite, long-run average = 100) — often predicts future spending." },
+  { key: "housingPrice", label: "House prices", family: "Housing", unit: "% y/y", decimals: 1, range: [-10, 20], about: "The annual change in nominal residential property prices — key to household wealth." },
   { key: "moneySupplyGrowth", label: "Money supply (M2)", family: "Money & Banking", unit: "% y/y", decimals: 1, range: [-2, 16], about: "How fast broad money is expanding — a long-run inflation signal." },
-  { key: "productivity", label: "Labour productivity", family: "Productivity", unit: "% y/y", decimals: 1, range: [-1, 5], about: "Output per hour worked — the root of sustainable wage growth." },
+  { key: "productivity", label: "Labour productivity", family: "Productivity", unit: "% y/y", decimals: 1, range: [-1, 5], about: "Real GDP per person employed, year on year — the root of sustainable wage growth." },
   { key: "currencyChange", label: "Currency vs USD (YTD)", family: "Money & Banking", unit: "%", decimals: 1, range: [-16, 12], about: "How the currency has moved against the dollar this year." },
 ];
 

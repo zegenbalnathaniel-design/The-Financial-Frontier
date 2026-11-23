@@ -1,7 +1,9 @@
 // FRED (Federal Reserve Bank of St. Louis) — free but KEY REQUIRED (FRED_API_KEY).
-// Get one at https://fredaccount.stlouisfed.org/apikeys . FRED is US-centric but also
-// mirrors many OECD series, which lets us source policy rates and 10-year yields for
-// the larger economies. Anything not covered simply isn't returned and falls back.
+// Get one at https://fredaccount.stlouisfed.org/apikeys . Latest values only: the trend
+// lines for policy rates and 10-year yields now come from BIS / OECD with no key
+// (src/lib/live/keyless.ts). FRED adds fresher DAILY readings on top — the US 10-year
+// (DGS10) and the OECD long-rate mirrors — plus US unemployment, and fills any economy
+// BIS doesn't publish a policy rate for. Anything not covered simply isn't returned.
 //
 // Observations endpoint returns { observations: [{ date, value }] }; value is a string
 // and "." means missing.
@@ -50,43 +52,6 @@ export async function fetchFred(apiKey: string | undefined, revalidate = DAY): P
         if (!obs || obs.value === "." || obs.value == null) return;
         const value = Number(obs.value);
         if (Number.isFinite(value)) out.set(`${country}:${key}`, { value, asOf: obs.date });
-      } catch {
-        /* one series failing must not sink the rest */
-      }
-    }),
-  );
-  return out;
-}
-
-/**
- * Monthly history (monthly averages; daily series like DFF/ECBDFR are averaged by FRED)
- * for every configured series of one indicator. Missing key → empty map. Each series has
- * its own timeout and failure isolation. Returns country → { id, points oldest → newest }.
- */
-export async function fetchFredHistory(
-  apiKey: string | undefined,
-  indicatorKey: string,
-  opts: { revalidate?: number; timeoutMs?: number; tags?: string[]; start?: string } = {},
-): Promise<Map<string, { id: string; points: Array<[string, number]> }>> {
-  const out = new Map<string, { id: string; points: Array<[string, number]> }>();
-  if (!apiKey) return out;
-  await Promise.all(
-    FRED_SERIES.filter((s) => s.key === indicatorKey).map(async ({ series, country }) => {
-      try {
-        const url = `${BASE}?series_id=${series}&api_key=${apiKey}&file_type=json&frequency=m&aggregation_method=avg&observation_start=${opts.start ?? "1990-01-01"}`;
-        const res = await fetch(url, {
-          next: { revalidate: opts.revalidate ?? DAY, tags: opts.tags },
-          signal: AbortSignal.timeout(opts.timeoutMs ?? 10000),
-        });
-        if (!res.ok) return;
-        const json = (await res.json()) as { observations?: Array<{ date: string; value: string }> };
-        const points: Array<[string, number]> = [];
-        for (const o of json.observations ?? []) {
-          const v = Number(o.value);
-          if (o.value === "." || !Number.isFinite(v)) continue;
-          points.push([o.date.slice(0, 7), v]); // "2026-10-01" → "2026-10"
-        }
-        if (points.length) out.set(country, { id: series, points });
       } catch {
         /* one series failing must not sink the rest */
       }

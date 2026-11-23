@@ -42,11 +42,26 @@ Install `@splinetool/react-spline`, then replace the `<Globe />` render with
 ## Data honesty (please read)
 
 - **Reports** and **dashboard** use real, attributed figures (see each report's Sources panel).
-- The **3D globe** runs on **illustrative sample data** in `src/lib/countries.ts`, seeded
-  with our June 2026 numbers where we have them (`sourced: true`). The UI labels these as sample data.
-  We never present invented numbers as real.
-- To make the 3D scenes authoritative, wire a live source (IMF/World Bank/FRED/ECB) into
-  `src/lib/countries.ts`. Colours, panels and filters update automatically.
+- The **globe** and **Indicator Explorer** overlay real, sourced values on the static dataset in
+  `src/lib/countries.ts` wherever a source covers an economy, and label every remaining cell
+  **sample data**. Real and sample points are never mixed on one trend line.
+- Where each of the 23 indicators comes from (latest value and trend line):
+
+| Source | Key? | Indicators | Code |
+|---|---|---|---|
+| World Bank WDI | none | GDP growth, GDP per capita, CPI, unemployment, current account, budget balance, broad money, FDI, trade balance, market cap | `live/worldbank.ts` |
+| OECD SDMX | none | core inflation (CPI ex food & energy), wage growth (compensation per employee), industrial production, retail sales volume, consumer confidence (CCI), labour productivity (GDP per person employed), 10-year yields | `live/keyless.ts` |
+| BIS data portal | none | central-bank policy rates (daily latest, end-of-month history), residential property prices | `live/keyless.ts` |
+| IMF WEO (DataMapper) | none | general government gross debt, % GDP (completed years only) | `live/keyless.ts` |
+| ECB / Frankfurter | none | currency vs USD YTD | `live/frankfurter.ts` |
+| FRED | `FRED_API_KEY` | fresher daily 10y yields / fed funds, US unemployment | `live/fred.ts` |
+| Alpha Vantage | `ALPHA_API_KEY` | equity return YTD + calendar-year returns (country ETFs, USD) | `live/worldMarkets.ts` |
+| — | — | **Manufacturing PMI** (no free source) | always labelled sample |
+
+  Coverage per indicator is 12–30 of our 30 economies (OECD and BIS don't publish everything for
+  every country); the rest stay labelled sample. `npm run history-seed` refreshes
+  `src/data/history-seed.json`, the committed copy of every keyless series that the site falls back
+  to when an upstream is slow or throttled (OECD throttles bursts).
 
 ## Live markets, Story of the Day & ⌘K (Nov 2026)
 
@@ -119,9 +134,9 @@ A SingStat-style table builder. Pick an indicator (23 across 12 families), choos
 view the result as a **line chart, bar chart, data table, or live ranking** — with a timeframe
 selector and CSV export. The home page carries a preview strip and a link.
 
-The explorer runs on the same illustrative sample data as the 3D scenes (`src/lib/indicators.ts`),
-deterministically generated so it's stable, and seeded with the June figures for growth/inflation/rate.
-Wire a real time-series API in that file to make it authoritative.
+Latest values and trend lines are real wherever a source covers the economy (see **Data honesty**
+above); anything else falls back to deterministic placeholders in `src/lib/indicators.ts`, which the
+UI labels as sample data (faded bars, “Sample” tags, dashed sample-only charts).
 
 > The old navigator cube was replaced by a **bento-grid module navigator** (`BentoNav.tsx`) with live
 > mini-visuals — sparklines, a mini market heatmap, and the latest issue — which is cleaner and more useful.

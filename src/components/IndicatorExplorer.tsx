@@ -8,7 +8,7 @@ import { LineChart as LineIcon, BarChart3, Table2, ListOrdered, Info, Download }
 import {
   INDICATORS, FAMILIES, TIMEFRAMES, ALL_COUNTRIES, currentValue, series, fmt, usesLive, provenanceFor,
 } from "@/lib/indicators";
-import { periodNum, type HistoryPoint } from "@/lib/history";
+import { periodNum, FREQ_LABEL, type HistoryPoint } from "@/lib/history";
 import { useLive } from "@/components/live/LiveDataProvider";
 import { useHistory, realSeries } from "@/components/live/useHistory";
 
@@ -297,9 +297,12 @@ export default function IndicatorExplorer() {
                 <p className="text-muted2">
                   Source: {hist.data.provider === "World Bank"
                     ? `World Bank WDI · ${Object.values(hist.data.seriesIds)[0] ?? ""} · annual`
-                    : `FRED · monthly averages · ${Array.from(new Set(trend.plotted.map((c) => hist.data!.seriesIds[c]))).join(", ")}`}
+                    : `${hist.data.provider} · ${Array.from(new Set(trend.plotted.map((c) => FREQ_LABEL[hist.data!.freqs?.[c] ?? hist.data!.freq ?? "A"]))).join(" / ")} · ${Array.from(new Set(trend.plotted.map((c) => hist.data!.seriesIds[c]).filter(Boolean))).join(", ")}`}
                   {" "}· {trend.first}–{trend.last} · retrieved {hist.data.retrieved}{hist.data.origin === "bundled" ? " (saved copy — upstream slow)" : ""}
                 </p>
+              )}
+              {view === "line" && trend.mode === "real" && hist.data?.note && (
+                <p className="text-muted2">{hist.data.note}</p>
               )}
               {view === "line" && trend.mode === "real" && trend.missing.length > 0 && (
                 <p className="text-gold/90">Not plotted — no sourced history in this window for {trend.missing.join(", ")} (we don&apos;t mix sample lines with real ones).</p>
@@ -327,7 +330,7 @@ export default function IndicatorExplorer() {
                 const sample = currentData.filter((d) => d.sample).length;
                 const curated = chosen.length - liveCount - sample;
                 const parts = [
-                  liveCount > 0 && `${liveCount} sourced live (${live.sources.join(", ")})`,
+                  liveCount > 0 && `${liveCount} sourced live (${Array.from(new Set(currentData.filter((d) => !d.sample && d.source !== "Report · Oct 2026").map((d) => d.source.replace(/ \(via .*\)$/, "").replace(/ \+ live quote$/, "")))).join(", ")})`,
                   curated > 0 && `${curated} from our October 2026 report`,
                   sample > 0 && `${sample} labelled sample placeholders`,
                 ].filter(Boolean);
