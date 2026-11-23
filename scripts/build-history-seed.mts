@@ -77,7 +77,7 @@ for (const d of KEYLESS) {
   freqs[d.key] = Object.fromEntries([...data].map(([code, s]) => [code, s.freq]));
   const latest = [...data.values()].map((s) => s.points[s.points.length - 1][0]).sort().pop();
   console.log(`✓ ${d.key.padEnd(20)} ${d.provider.padEnd(10)} ${String(data.size).padStart(2)}/${codes.length} economies, latest ${latest}`);
-  if (d.provider === "OECD") await sleep(8000); // stay well inside OECD's rate limit
+  if (d.provider === "OECD") await sleep(45000); // OECD throttles bursts and heavy queries — go slowly
 }
 
 const out = { retrieved: new Date().toISOString().slice(0, 10), source: "World Bank WDI · OECD · BIS · IMF WEO", indicators, ids, freqs };

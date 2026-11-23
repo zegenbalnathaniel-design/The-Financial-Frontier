@@ -48,7 +48,9 @@ const EURO_MEMBERS = ["DE", "FR", "IT", "ES"];
 const OECD = "https://sdmx.oecd.org/public/rest/data";
 const BIS = "https://stats.bis.org/api/v2/data/dataflow/BIS";
 const IMF = "https://www.imf.org/external/datamapper/api/v1";
-const START = "1995-01";
+// 20 years of history — the explorer's longest fixed window. OECD rejects (HTTP 500) and then
+// challenges heavy multi-country full-history queries, so requests are kept small.
+const START = "2006-01";
 
 // ── one upstream query ("leg") ─────────────────────────────────────────────────────────
 interface Leg {
@@ -71,8 +73,9 @@ interface KeylessDef {
   legs: Leg[];
 }
 
-const oecd = (flow: string, key: (areas: string) => string) => (codes: string[]) =>
-  `${OECD}/${flow}/${key(codes.map((c) => ISO3[c]).filter(Boolean).join("+"))}?startPeriod=${START}&detail=dataonly`;
+/** OECD query URL; `only` restricts it to the economies that leg is actually needed for. */
+const oecd = (flow: string, key: (areas: string) => string, only?: string[]) => (codes: string[]) =>
+  `${OECD}/${flow}/${key(codes.filter((c) => !only || only.includes(c)).map((c) => ISO3[c]).filter(Boolean).join("+"))}?startPeriod=${START}&detail=dataonly`;
 
 const bis = (flow: string, key: (areas: string) => string) => (codes: string[]) => {
   const areas = new Set(codes);
@@ -88,7 +91,8 @@ export const KEYLESS: KeylessDef[] = [
       { provider: "OECD", id: "PRICES_C2018 CPI ex food & energy", freq: "M",
         url: oecd("OECD.SDD.TPS,DSD_PRICES_COICOP2018@DF_PRICES_C2018_N_TXCP01_NRG,1.0", (a) => `${a}.M.N.CPI.PA._TXCP01_NRG.N.GY`) },
       { provider: "OECD", id: "PRICES CPI ex food & energy", freq: "M",
-        url: oecd("OECD.SDD.TPS,DSD_PRICES@DF_PRICES_N_TXCP01_NRG,1.0", (a) => `${a}.M.N.CPI.PA._TXCP01_NRG.N.GY`) },
+        // only the economies that still publish on COICOP 1999 (absent from the 2018 flow)
+        url: oecd("OECD.SDD.TPS,DSD_PRICES@DF_PRICES_N_TXCP01_NRG,1.0", (a) => `${a}.M.N.CPI.PA._TXCP01_NRG.N.GY`, ["US", "GB", "DE", "KR", "AU", "ZA", "RU"]) },
     ],
   },
   {
@@ -97,7 +101,7 @@ export const KEYLESS: KeylessDef[] = [
       { provider: "OECD", id: "STES PRVM BTE (monthly)", freq: "M", yoy: true,
         url: oecd("OECD.SDD.STES,DSD_STES@DF_INDSERV,4.3", (a) => `${a}.M.PRVM.IX.BTE.Y....`) },
       { provider: "OECD", id: "STES PRVM BTE (quarterly)", freq: "Q", yoy: true,
-        url: oecd("OECD.SDD.STES,DSD_STES@DF_INDSERV,4.3", (a) => `${a}.Q.PRVM.IX.BTE.Y....`) },
+        url: oecd("OECD.SDD.STES,DSD_STES@DF_INDSERV,4.3", (a) => `${a}.Q.PRVM.IX.BTE.Y....`, ["AU", "NZ"]) },
     ],
   },
   {
@@ -106,7 +110,7 @@ export const KEYLESS: KeylessDef[] = [
       { provider: "OECD", id: "STES TOVM G47 (monthly)", freq: "M", yoy: true,
         url: oecd("OECD.SDD.STES,DSD_STES@DF_INDSERV,4.3", (a) => `${a}.M.TOVM.IX.G47.Y....`) },
       { provider: "OECD", id: "STES TOVM G47 (quarterly)", freq: "Q", yoy: true,
-        url: oecd("OECD.SDD.STES,DSD_STES@DF_INDSERV,4.3", (a) => `${a}.Q.TOVM.IX.G47.Y....`) },
+        url: oecd("OECD.SDD.STES,DSD_STES@DF_INDSERV,4.3", (a) => `${a}.Q.TOVM.IX.G47.Y....`, ["AU", "NZ"]) },
     ],
   },
   {

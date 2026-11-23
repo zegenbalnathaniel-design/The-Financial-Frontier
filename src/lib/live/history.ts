@@ -48,7 +48,12 @@ export interface KeylessResult {
  * seed for any economy it didn't (whole indicator on failure). Never throws.
  */
 export async function getKeylessSeries(key: string): Promise<KeylessResult> {
-  const live = await fetchKeylessHistory(key, CODES(), KEYLESS_OPTS).catch(() => new Map());
+  let reason = "";
+  const live = await fetchKeylessHistory(key, CODES(), KEYLESS_OPTS).catch((e: Error) => {
+    reason = e.message.replace(/^\S+ \S+: /, ""); // "OECD coreInflation: HTTP 429" → "HTTP 429"
+    console.warn(`[history] ${key}: live fetch failed (${reason}); using seed`);
+    return new Map();
+  });
   const series: Record<string, HistoryPoint[]> = {};
   const seriesIds: Record<string, string> = {};
   const freqs: Record<string, HistoryFreq> = {};
@@ -73,8 +78,8 @@ export async function getKeylessSeries(key: string): Promise<KeylessResult> {
   return {
     series, seriesIds, freqs, retrieved: SEED.retrieved, origin: fromSeed.length ? "bundled" : "none",
     note: fromSeed.length
-      ? `${provider} did not respond in time; showing our last saved copy of the same series.`
-      : `${provider} did not respond in time and we have no saved copy yet — shown as sample data until it does.`,
+      ? `${provider} did not respond in time${reason ? ` (${reason})` : ""}; showing our last saved copy of the same series.`
+      : `${provider} did not respond in time${reason ? ` (${reason})` : ""} and we have no saved copy yet — shown as sample data until it does.`,
   };
 }
 
